@@ -435,36 +435,44 @@
   /*products*/
   .product-heading{
     font-size: 20px;
+    width: 100%;
   }
-  .products-grid{
-    column-gap: 7px;
+  .products-grid{ 
     grid-template-columns: 1fr 1fr;
-    padding: 30px 10px;
+    padding: 30px 0px;
   }
   .products {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 10px 10px 30px gray;
     border-radius: 10px;
     transition: box-shadow .15s linear;
     cursor: pointer;
     background-color: white;
-    width: 180px;
-    height: 340px;
+    height: 100%;
+    width: 90%;
+  }
+  .products-top{
+    width: 100%;
+  }
+  .product-bottom{
+    width: 100%;
   }
   .product-image{
-    width: 100px;
+    width: 100%;
   }
   .product-name{
-    font-size: 14px;
+    font-size: 14px;  
   }
   .product-price{
+    margin-top: 5px;
     font-size: 16px;
   }
   .product-bottom button{
-    padding:8px;
+    position: absolute;
+    bottom: 0px;
+    right: 0%;
   }
   .product-bottom button i{
     font-size: 12px;
@@ -478,6 +486,7 @@
     margin-top: 30px;
     box-shadow: 10px 10px 50px rgb(37, 37, 37);
     font-family: arial;
+    width: 100%;
     background-color: rgb(192, 192, 192);
     bottom: 0;
   }

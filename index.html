@@ -32,7 +32,7 @@
     <div class="hero-left">
       <h2>Timeless Masterpieces, Crafted for Elite</h2>
       <h4>Time is All We Have - Wear a Watch that matches Your Style and Legacy</h4>
-      <button>Explore More</button>
+      <button id="exploreBtn">Explore More</button>
     </div>
   </section>
 
@@ -69,6 +69,7 @@
   <section class="fe-products">
     <h1 class="product-heading">Featured Products</h1>
     <section class="products-grid js-product-grid">
+
     </section>
   </section>
   
@@ -96,142 +97,150 @@
   </footer>
 
   <script src="./Script/data.js"></script>
-  <script src="./Script/data.js"></script>
-<script>
-  // --- 1. Mobile Menu Logic ---
-  const bar = document.getElementById('bar');
-  const nav = document.querySelector('.header-right-section');
-  const close = document.getElementById('close');
-  if (bar) {
-    bar.addEventListener('click', () => nav.classList.add('active'));
-  }
-  if (close) {
-    close.addEventListener('click', () => nav.classList.remove('active'));
-  }
+  <script>
+    // --- 1. Mobile Menu Logic ---
+    const bar = document.getElementById('bar');
+    const nav = document.querySelector('.header-right-section');
+    const close = document.getElementById('close');
+    if (bar) {
+      bar.addEventListener('click', () => nav.classList.add('active'));
+    }
+    if (close) {
+      close.addEventListener('click', () => nav.classList.remove('active'));
+    }
 
-  // --- 2. Generate Product Grid ---
-  let productHTML = '';
-  products.forEach((product) => {
-    productHTML += `
-      <div class="products js-product" onclick="window.location.href='Product-detail.html?id=${product.id}'">
+    // --- 2. Generate Product Grid ---
+    let productHTML = '';
+    products.forEach((product) => {
+      productHTML += `
+        <div class="products js-product" onclick="window.location.href='Product-detail.html?id=${product.id}'">
         <div class="products-top">
-          <div class="dis-container">
-            <p class="discount">${product.dis}% OFF</p>
-          </div>
-          <img class="product-image" src="${product.image}" alt="${product.name}">
+          <div class="dis-container"><p class="discount">${product.dis}% OFF</p></div>
+          <img class="product-image" src="./Images/product/product-1.png" alt="Bugatti Luxury Watch - Perfect for Atheletes">
         </div>
         <div class="product-bottom">
-          <p class="product-owner">RAVYN Watches</p>
-          <h2 class="product-name">${product.name}</h2>
+          <p class="product-owner">RAVYN Watch</p>
+          <div class="product-name-container"><h2 class="product-name">${product.name}</h2></div>
           <h4 class="product-price">Rs ${product.price}/-</h4>
           <button class="js-buy-button" data-product-id="${product.id}">
             <i class="fa-solid fa-bag-shopping"></i>
           </button>
         </div>
       </div>
-    `;
-  });
-  document.querySelector('.js-product-grid').innerHTML = productHTML;
-
-  // --- 3. Home Page "Add to Cart" Logic ---
-  document.querySelectorAll('.js-buy-button').forEach(button => {
-    button.addEventListener('click', (e) => {
-      // Stop the click from bubbling up to the main div (prevents redirect)
-      e.stopPropagation();
-
-      const productId = button.getAttribute('data-product-id');
-      const product = products.find(p => p.id === productId);
-
-      if (product) {
-        let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-        
-        // Check if item exists
-        const existingItem = cart.find(item => item.id === product.id);
-        if (existingItem) {
-          existingItem.quantity += 1;
-        } else {
-          cart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            quantity: 1
-          });
-        }
-        
-        // Save and Update
-        localStorage.setItem('ravyn_cart', JSON.stringify(cart));
-        updateCartCount();
-
-        // Optional: Visual Feedback (Change icon color briefly)
-        const icon = button.querySelector('i');
-        icon.style.color = '#088178';
-        setTimeout(() => icon.style.color = '', 500);
-      }
+      `;
     });
-  });
 
-  // --- 4. Cart Count Logic (Runs on Load & Update) ---
-  function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-    const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-    
-    const countElement = document.querySelector('.cart-button span');
-    if (countElement) {
-      countElement.innerText = totalCount;
-      // Hide badge if 0, show if > 0
-      countElement.style.display = totalCount > 0 ? 'block' : 'none';
+    document.querySelector('.js-product-grid').innerHTML = productHTML;
+
+    // --- 3. Home Page "Add to Cart" Logic ---
+    document.querySelectorAll('.js-buy-button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        // Stop the click from bubbling up to the main div (prevents redirect)
+        e.stopPropagation();
+
+        const productId = button.getAttribute('data-product-id');
+        const product = products.find(p => p.id === productId);
+
+        if (product) {
+          let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+          
+          // Check if item exists
+          const existingItem = cart.find(item => item.id === product.id);
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cart.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.image,
+              quantity: 1
+            });
+          }
+          
+          // Save and Update
+          localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+          updateCartCount();
+
+          // Optional: Visual Feedback (Change icon color briefly)
+          const icon = button.querySelector('i');
+          icon.style.color = '#088178';
+          setTimeout(() => icon.style.color = '', 500);
+        }
+      });
+    });
+
+    // --- 4. Cart Count Logic (Runs on Load & Update) ---
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+      const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      
+      const countElement = document.querySelector('.cart-button span');
+      if (countElement) {
+        countElement.innerText = totalCount;
+        // Hide badge if 0, show if > 0
+        countElement.style.display = totalCount > 0 ? 'block' : 'none';
+      }
     }
-  }
 
-  // Run immediately on page load
-  updateCartCount();
+    // Run immediately on page load
+    updateCartCount();
 
 
-  // --- 5. Slider Logic (Unchanged) ---
-  const track = document.querySelector('.slider-track');
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const slideWidth = 200; 
-  let autoPlayInterval;
+    // --- 5. Slider Logic (Unchanged) ---
+    const track = document.querySelector('.slider-track');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const slideWidth = 200; 
+    let autoPlayInterval;
 
-  function updateActive() {
-    const slides = document.querySelectorAll('.slide');
-    slides.forEach(s => s.classList.remove('active'));
-    if(slides[2]) slides[2].classList.add('active');
-  }
-  updateActive();
+    function updateActive() {
+      const slides = document.querySelectorAll('.slide');
+      slides.forEach(s => s.classList.remove('active'));
+      if(slides[2]) slides[2].classList.add('active');
+    }
+    updateActive();
 
-  function moveNext() {
-    track.style.transition = 'transform 0.5s linear';
-    track.style.transform = `translateX(-${slideWidth}px)`;
-    setTimeout(() => {
+    function moveNext() {
+      track.style.transition = 'transform 0.5s linear';
+      track.style.transform = `translateX(-${slideWidth}px)`;
+      setTimeout(() => {
+        track.style.transition = 'none';
+        track.appendChild(track.firstElementChild);
+        track.style.transform = 'translateX(0)';
+        updateActive();
+      }, 500);
+    }
+
+    function movePrev() {
       track.style.transition = 'none';
-      track.appendChild(track.firstElementChild);
-      track.style.transform = 'translateX(0)';
-      updateActive();
-    }, 500);
-  }
+      track.prepend(track.lastElementChild);
+      track.style.transform = `translateX(-${slideWidth}px)`;
+      setTimeout(() => {
+        track.style.transition = 'transform 0.5s ease';
+        track.style.transform = 'translateX(0)';
+        updateActive();
+      }, 20);
+    }
 
-  function movePrev() {
-    track.style.transition = 'none';
-    track.prepend(track.lastElementChild);
-    track.style.transform = `translateX(-${slideWidth}px)`;
-    setTimeout(() => {
-      track.style.transition = 'transform 0.5s ease';
-      track.style.transform = 'translateX(0)';
-      updateActive();
-    }, 20);
-  }
+    nextBtn.addEventListener('click', () => { moveNext(); resetTimer(); });
+    prevBtn.addEventListener('click', () => { movePrev(); resetTimer(); });
 
-  nextBtn.addEventListener('click', () => { moveNext(); resetTimer(); });
-  prevBtn.addEventListener('click', () => { movePrev(); resetTimer(); });
+    function startAutoPlay() { autoPlayInterval = setInterval(moveNext, 2500); }
+    function stopAutoPlay() { clearInterval(autoPlayInterval); }
+    function resetTimer() { stopAutoPlay(); startAutoPlay(); }
+    startAutoPlay();
 
-  function startAutoPlay() { autoPlayInterval = setInterval(moveNext, 2500); }
-  function stopAutoPlay() { clearInterval(autoPlayInterval); }
-  function resetTimer() { stopAutoPlay(); startAutoPlay(); }
-  
-  startAutoPlay();
-</script>
+    const exploreBtn = document.getElementById('exploreBtn');
+    const featuredSection = document.querySelector('.fe-products');
+
+    if (exploreBtn && featuredSection) {
+      exploreBtn.addEventListener('click', () => {
+        featuredSection.scrollIntoView({ 
+          behavior: 'smooth', 
+        });
+      });
+    }
+  </script>
 </body>
 </html>

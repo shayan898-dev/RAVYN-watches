@@ -1,3 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
 body{
   margin: 0px;
   padding: 0px;
@@ -26,25 +29,12 @@ i{
   background-position: center center;
   background-size: cover;
 }
-.hero-right{
-  width:500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .hero-left{
   width: 600px;
   margin-left: 70px;
   font-style: italic;
 }
-.hero-image{
-  width: 350px;
-  min-width: 100px;
-}
 .hero-left h2{
-  font-size: 40px;
-}
-.hero-lefth4{
   font-size: 40px;
 }
 .hero-left button{
@@ -64,48 +54,9 @@ i{
   color: black;
 
 }
-
-.feature{
-  margin: 50px 80px;
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-  overflow-x: auto;
-  column-gap: 15px;
+.fe-products {
+  scroll-margin-top: 80px; /* Adjust this value to match your header height */
 }
-.feature::-webkit-scrollbar{
-  display: none;
-}
-.group{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  animation: spin 60s infinite linear;
-  padding-right: 260px;
-}
-@keyframes spin{
-  from{translate: 0;}
-  to {translate: -100%;}
-}
-.fe{
-  flex: 0 0 10%;
-  background-color:#ffff;
-  height: 180px;
-  padding: 10px;
-  font-family: arial;
-  border-radius: 10px;
-  border: 1px solid gray;
-}
-.fe-image{
-  width: 120px;
-}
-.fe h4{
-  background-color: lightblue;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
 .product-heading{
   text-align: center;
   box-shadow: 5px 5px 10px gray;
@@ -119,7 +70,7 @@ i{
 .products-grid{
   display: grid;
   align-content: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   padding: 40px 60px;
   column-gap: 20px;
   row-gap: 60px;
@@ -134,12 +85,12 @@ i{
   transition: box-shadow .1s ease;
   cursor: pointer;
   background-color: white;
-  width: 250px;
-  height: 480px;
-  position: relative;
+  padding: 10px;
+  height: auto;
+  position: relative; 
 }
 .product-image{
-  width: 220px;
+  width: 100%;
 }
 .products:hover{
   box-shadow: 5px 5px 15px gray;
@@ -177,7 +128,7 @@ i{
   cursor: pointer;
   box-shadow: 5px 5px 10px gray;
   position: absolute;
-  bottom: -5px;
+  bottom: 5px;
   right: 5px;
   background-color: black;
   padding: 10px;
@@ -193,6 +144,11 @@ i{
   color: gray;
   margin-bottom:0px;
 }
+.product-name-container{
+  height: auto;
+  width: 100%;
+  margin-bottom: 25px;
+}
 .product-name{
   margin-top: 10px;
   font-size: 18px;
@@ -205,7 +161,6 @@ i{
 }
 .product-price{
   font-size: 20px;
-  margin-top: 15px;
   font-weight: 700;
   margin-bottom: 0px;
   color: rgb(9 , 128 , 128);
