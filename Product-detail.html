@@ -175,6 +175,8 @@ Is it available?`;
       const addCartBtn = document.querySelector('.add-cart-btn');
       const buyNowBtn = document.querySelector('.buy-now-btn');
 
+      updateCartCount();
+
       // --- ADD TO CART LOGIC ---
       addCartBtn.addEventListener('click', () => {
         let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
@@ -195,6 +197,8 @@ Is it available?`;
         }
 
         localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+
+        updateCartCount();
 
         // --- NEW FEEDBACK LOGIC ---
         // 1. Save original styles and text
@@ -220,17 +224,28 @@ Is it available?`;
             // Optional: Redirect to cart after the visual effect finishes
             // window.location.href = 'cart.html'; 
     }, 1000);
-});
+  });
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+    // Sum up the quantity of all items
+    const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    
+    // Find the span inside the cart button and update it
+    const countElement = document.querySelector('.cart-button span');
+    if (countElement) {
+        countElement.innerText = totalCount;
+    }
+  }
 
       // --- BUY NOW LOGIC (Direct to WhatsApp) ---
       buyNowBtn.addEventListener('click', () => {
-          const quantity = quantityInput.value;
-          const total = product.price * quantity;
-          const phoneNumber = "923107715463"; 
-          const message = `Hello, I want to Buy Now:\nName: ${product.name}\nPrice: Rs ${product.price}\nQuantity: ${quantity}\nTotal: Rs ${total}\n--------------------\nIs it available?`;
-          
-          const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-          window.open(url, '_blank');
+        const quantity = quantityInput.value;
+        const total = product.price * quantity;
+        const phoneNumber = "923107715463"; 
+        const message = `Hello, I want to Buy Now:\nName: ${product.name}\nPrice: Rs ${product.price}\nQuantity: ${quantity}\nTotal: Rs ${total}\n--------------------\nIs it available?`;
+        
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
       });
     }
 

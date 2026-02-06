@@ -96,116 +96,142 @@
   </footer>
 
   <script src="./Script/data.js"></script>
-  <script>
-    const bar = document.getElementById('bar');
-    const nav = document.querySelector('.header-right-section');
-    const close = document.getElementById('close');
-    if (bar) {
-      bar.addEventListener('click' , () => {
-        nav.classList.add('active');
-      })
-    }
-    if (close){
-      close.addEventListener('click' , () => {
-        nav.classList.remove('active');
-      })
-    }
+  <script src="./Script/data.js"></script>
+<script>
+  // --- 1. Mobile Menu Logic ---
+  const bar = document.getElementById('bar');
+  const nav = document.querySelector('.header-right-section');
+  const close = document.getElementById('close');
+  if (bar) {
+    bar.addEventListener('click', () => nav.classList.add('active'));
+  }
+  if (close) {
+    close.addEventListener('click', () => nav.classList.remove('active'));
+  }
 
-    let productHTML = '';
-    products.forEach((product) => {
-      productHTML += `
-        <div class="products js-product"
-        onclick="window.location.href='Product-detail.html?id=${product.id}'"
-        >
-          <div class="products-top">
-            <div class="dis-container">
-              <p class="discount">${product.dis}% OFF</p>
-            </div>
-            <img class="product-image" src="${product.image}">
+  // --- 2. Generate Product Grid ---
+  let productHTML = '';
+  products.forEach((product) => {
+    productHTML += `
+      <div class="products js-product" onclick="window.location.href='Product-detail.html?id=${product.id}'">
+        <div class="products-top">
+          <div class="dis-container">
+            <p class="discount">${product.dis}% OFF</p>
           </div>
-          <div class="product-bottom">
-            <p class="product-owner">RAVYN Watches</p>
-            <h2 class="product-name">${product.name}</h2>
-            <h4 class="product-price">Rs ${product.price}/-</h4>
-            <button class="js-buy-button">
-              <i class="fa-solid fa-bag-shopping"></i>
-            </button>
-          </div>
+          <img class="product-image" src="${product.image}" alt="${product.name}">
         </div>
-      `
-    });
+        <div class="product-bottom">
+          <p class="product-owner">RAVYN Watches</p>
+          <h2 class="product-name">${product.name}</h2>
+          <h4 class="product-price">Rs ${product.price}/-</h4>
+          <button class="js-buy-button" data-product-id="${product.id}">
+            <i class="fa-solid fa-bag-shopping"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  document.querySelector('.js-product-grid').innerHTML = productHTML;
 
-    document.querySelector('.js-product-grid').innerHTML = productHTML;
+  // --- 3. Home Page "Add to Cart" Logic ---
+  document.querySelectorAll('.js-buy-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+      // Stop the click from bubbling up to the main div (prevents redirect)
+      e.stopPropagation();
 
-    const track = document.querySelector('.slider-track');
-    const nextBtn = document.getElementById('nextBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    
-    // Settings
-    const slideWidth = 200; // Match this to your CSS (width + gap)
-    let autoPlayInterval;
+      const productId = button.getAttribute('data-product-id');
+      const product = products.find(p => p.id === productId);
 
-    // 1. UPDATE ACTIVE: Target the MIDDLE item (Index 2)
-    function updateActive() {
-      const slides = document.querySelectorAll('.slide');
-      
-      // Remove active from all
-      slides.forEach(s => s.classList.remove('active'));
-      
-      // Add active to the 3rd item (Index 2), which is the exact center of 5 items
-      if(slides[2]) {
-          slides[2].classList.add('active');
+      if (product) {
+        let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+        
+        // Check if item exists
+        const existingItem = cart.find(item => item.id === product.id);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1
+          });
+        }
+        
+        // Save and Update
+        localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+        updateCartCount();
+
+        // Optional: Visual Feedback (Change icon color briefly)
+        const icon = button.querySelector('i');
+        icon.style.color = '#088178';
+        setTimeout(() => icon.style.color = '', 500);
       }
+    });
+  });
+
+  // --- 4. Cart Count Logic (Runs on Load & Update) ---
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+    const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    
+    const countElement = document.querySelector('.cart-button span');
+    if (countElement) {
+      countElement.innerText = totalCount;
+      // Hide badge if 0, show if > 0
+      countElement.style.display = totalCount > 0 ? 'block' : 'none';
     }
-    // Run once on load
-    updateActive();
-    // 2. NEXT FUNCTION
-    function moveNext() {
-      track.style.transition = 'transform 0.5s linear';
-      track.style.transform = `translateX(-${slideWidth}px)`;
-      setTimeout(() => {
-        track.style.transition = 'none';
-        // Move first item to the end
-        track.appendChild(track.firstElementChild);
-        track.style.transform = 'translateX(0)';
-        updateActive();
-      }, 500);
-    }
-    // 3. PREV FUNCTION
-    function movePrev() {
+  }
+
+  // Run immediately on page load
+  updateCartCount();
+
+
+  // --- 5. Slider Logic (Unchanged) ---
+  const track = document.querySelector('.slider-track');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const slideWidth = 200; 
+  let autoPlayInterval;
+
+  function updateActive() {
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach(s => s.classList.remove('active'));
+    if(slides[2]) slides[2].classList.add('active');
+  }
+  updateActive();
+
+  function moveNext() {
+    track.style.transition = 'transform 0.5s linear';
+    track.style.transform = `translateX(-${slideWidth}px)`;
+    setTimeout(() => {
       track.style.transition = 'none';
-      // Move last item to the front
-      track.prepend(track.lastElementChild);
-      track.style.transform = `translateX(-${slideWidth}px)`;
-      setTimeout(() => {
-        track.style.transition = 'transform 0.5s ease';
-        track.style.transform = 'translateX(0)';
-        updateActive();
-      }, 20);
-    }
-    // 4. Event Listeners
-    nextBtn.addEventListener('click', () => {
-        moveNext();
-        resetTimer(); // Reset timer so it doesn't jump immediately after a click
-    });
-    prevBtn.addEventListener('click', () => {
-        movePrev();
-        resetTimer();
-    });
-    // 5. Auto Play Logic
-    function startAutoPlay() {
-      autoPlayInterval = setInterval(moveNext, 2500);
-    }
-    function stopAutoPlay() {
-      clearInterval(autoPlayInterval);
-    }
-    // Helper to reset timer on manual click
-    function resetTimer() {
-        stopAutoPlay();
-        startAutoPlay();
-    }
-    // Start the loop
-    startAutoPlay();
-  </script>
+      track.appendChild(track.firstElementChild);
+      track.style.transform = 'translateX(0)';
+      updateActive();
+    }, 500);
+  }
+
+  function movePrev() {
+    track.style.transition = 'none';
+    track.prepend(track.lastElementChild);
+    track.style.transform = `translateX(-${slideWidth}px)`;
+    setTimeout(() => {
+      track.style.transition = 'transform 0.5s ease';
+      track.style.transform = 'translateX(0)';
+      updateActive();
+    }, 20);
+  }
+
+  nextBtn.addEventListener('click', () => { moveNext(); resetTimer(); });
+  prevBtn.addEventListener('click', () => { movePrev(); resetTimer(); });
+
+  function startAutoPlay() { autoPlayInterval = setInterval(moveNext, 2500); }
+  function stopAutoPlay() { clearInterval(autoPlayInterval); }
+  function resetTimer() { stopAutoPlay(); startAutoPlay(); }
+  
+  startAutoPlay();
+</script>
 </body>
 </html>

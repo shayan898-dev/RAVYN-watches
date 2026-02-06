@@ -64,64 +64,81 @@
   </section>
 
   <script>
-      function renderCart() {
-          const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-          const tableBody = document.getElementById('cart-items-body');
-          let grandTotal = 0;
+    updateCartCount();
 
-          if (cart.length === 0) {
-              tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Your cart is empty.</td></tr>";
-              document.getElementById('grand-total-display').innerText = "Total: Rs 0/-";
-              return;
-          }
-
-          tableBody.innerHTML = cart.map((item, index) => {
-              const subtotal = item.price * item.quantity;
-              grandTotal += subtotal;
-              return `
-                  <tr>
-                      <td><img src="${item.image}" alt="${item.name}"></td>
-                      <td>${item.name}</td>
-                      <td>Rs ${item.price}</td>
-                      <td>${item.quantity}</td>
-                      <td>Rs ${subtotal}</td>
-                      <td><button class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button></td>
-                  </tr>
-              `;
-          }).join('');
-
-          document.getElementById('grand-total-display').innerText = "Total: Rs " + grandTotal + "/-";
-      }
-
-      function removeItem(index) {
-          let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-          cart.splice(index, 1);
-          localStorage.setItem('ravyn_cart', JSON.stringify(cart));
-          renderCart();
-      }
-
-      function checkoutViaWhatsApp() {
-          const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-          if (cart.length === 0) return alert("Your cart is empty!");
-
-          let message = "Hello RAVYN, I would like to place an order:\n\n";
-          let total = 0;
-
-          cart.forEach(item => {
-              const subtotal = item.price * item.quantity;
-              message += `* ${item.name}\n  Qty: ${item.quantity} | Price: Rs ${subtotal}\n\n`;
-              total += subtotal;
-          });
-
-          message += `--------------------\n*Grand Total: Rs ${total}/-*\n\nPlease confirm availability.`;
-          
-          const phoneNumber = "923107715463"; 
-          const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-          window.open(url, '_blank');
-      }
-
-      // Initial render
+    function removeItem(index) {
+      let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+      
       renderCart();
+      updateCartCount(); // <--- CALL IT HERE
+    }
+    function renderCart() {
+      const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+      const tableBody = document.getElementById('cart-items-body');
+      let grandTotal = 0;
+
+      if (cart.length === 0) {
+          tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Your cart is empty.</td></tr>";
+          document.getElementById('grand-total-display').innerText = "Total: Rs 0/-";
+          return;
+      }
+
+      tableBody.innerHTML = cart.map((item, index) => {
+          const subtotal = item.price * item.quantity;
+          grandTotal += subtotal;
+          return `
+            <tr>
+              <td><img src="${item.image}" alt="${item.name}"></td>
+              <td>${item.name}</td>
+              <td>Rs ${item.price}</td>
+              <td>${item.quantity}</td>
+              <td>Rs ${subtotal}</td>
+              <td><button class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button></td>
+            </tr>
+          `;
+      }).join('');
+
+      document.getElementById('grand-total-display').innerText = "Total: Rs " + grandTotal + "/-";
+    }
+
+    function removeItem(index) {
+        let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+      const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      const countElement = document.querySelector('.cart-button span');
+      if (countElement) countElement.innerText = totalCount;
+    }
+
+    function checkoutViaWhatsApp() {
+        const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+        if (cart.length === 0) return alert("Your cart is empty!");
+
+        let message = "Hello RAVYN, I would like to place an order:\n\n";
+        let total = 0;
+
+        cart.forEach(item => {
+            const subtotal = item.price * item.quantity;
+            message += `* ${item.name}\n  Qty: ${item.quantity} | Price: Rs ${subtotal}\n\n`;
+            total += subtotal;
+        });
+
+        message += `--------------------\n*Grand Total: Rs ${total}/-*\n\nPlease confirm availability.`;
+        
+        const phoneNumber = "923107715463"; 
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
+    // Initial render
+    renderCart();
   </script>
 </body>
 </html>
