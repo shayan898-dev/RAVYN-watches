@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>RAVYN watches</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./Styles/home.css">
+  <link rel="stylesheet" href="./Styles/header-footer.css">
+  <link rel="stylesheet" href="./Styles/responsive.css">
+  <link rel="stylesheet" href="./css/all.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.min.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo-container">
+      <a href="index.html"><h1>RAVYN</h1></a>
+    </div>
+    <div class="header-right-section">
+        <a href="index.html"><p class="menu">Home</p></a>
+        <a href="about.html"><p class="menu">About</p></a>
+        <p class="menu">Contact</p>
+        <a href="cart.html"><i class="fa-solid fa-bag-shopping cart-button"><span>0</span></i></a>
+        <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
+    </div>
+    <div class="mobile">
+      <i id="bar" class="fas fa-outdent"></i>
+    </div>    
+  </header>
+
+  <section class="hero-section">
+    <div class="hero-left">
+      <h2>Timeless Masterpieces, Crafted for Elite</h2>
+      <h4>Time is All We Have - Wear a Watch that matches Your Style and Legacy</h4>
+      <button>Explore More</button>
+    </div>
+  </section>
+
+  <section class="carousel-wrapper" onmouseover="stopAutoPlay()" onmouseout="startAutoPlay()">
+    <button class="nav-btn prev-btn" id="prevBtn">&#10094;</button>
+    <button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
+
+    <div class="slider-container">
+      <div class="slider-track">
+        <div class="slide active">
+          <img src="./Images/catagories/men-watch.webp" alt="Men">
+          <p>Men Watch</p>
+        </div>
+        <div class="slide">
+          <img src="./Images/catagories/women-watch.webp" alt="Women">
+          <p>Women Watch</p>
+        </div>
+        <div class="slide">
+          <img src="./Images/catagories/men-bracelet.webp" alt="Men Brace">
+          <p>Men Bracelet</p>
+        </div>
+        <div class="slide">
+          <img src="./Images/catagories/women-bracelet.webp" alt="Women Brace">
+          <p>Women Bracelet</p>
+        </div>
+        <div class="slide">
+          <img src="./Images/catagories/men-watch.webp" alt="Extra">
+          <p>Luxury Set</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="fe-products">
+    <h1 class="product-heading">Featured Products</h1>
+    <section class="products-grid js-product-grid">
+    </section>
+  </section>
+  
+  <footer class="footer">
+    <div class="footer-left-section">
+        <h1>RAVYN</h1>
+        <p class="footer-text">RAVYN Watches brings premium timepieces crafted for elegance, precision, and everyday style.</p>
+    </div>
+    <div class="footer-right-section">
+      <h2>Social</h2>
+      <div class="social-link">
+        <p><strong>Address: <br></strong> Sargodha , Pakistan</p>
+        <p><strong>Phone: <br></strong> +92-399-99999</p>
+        <p><strong>Email: <br></strong> info@support.com</p>
+      </div>
+      <div class="social-icon">
+        <i class="fa-brands fa-tiktok"></i>
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+      </div>
+        
+    </div>
+
+
+  </footer>
+
+  <script src="./Script/data.js"></script>
+  <script>
+    const bar = document.getElementById('bar');
+    const nav = document.querySelector('.header-right-section');
+    const close = document.getElementById('close');
+    if (bar) {
+      bar.addEventListener('click' , () => {
+        nav.classList.add('active');
+      })
+    }
+    if (close){
+      close.addEventListener('click' , () => {
+        nav.classList.remove('active');
+      })
+    }
+
+    let productHTML = '';
+    products.forEach((product) => {
+      productHTML += `
+        <div class="products js-product"
+        onclick="window.location.href='Product-detail.html?id=${product.id}'"
+        >
+          <div class="products-top">
+            <div class="dis-container">
+              <p class="discount">${product.dis}% OFF</p>
+            </div>
+            <img class="product-image" src="${product.image}">
+          </div>
+          <div class="product-bottom">
+            <p class="product-owner">RAVYN Watches</p>
+            <h2 class="product-name">${product.name}</h2>
+            <h4 class="product-price">Rs ${product.price}/-</h4>
+            <button class="js-buy-button">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+        </div>
+      `
+    });
+
+    document.querySelector('.js-product-grid').innerHTML = productHTML;
+
+    const track = document.querySelector('.slider-track');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    
+    // Settings
+    const slideWidth = 200; // Match this to your CSS (width + gap)
+    let autoPlayInterval;
+
+    // 1. UPDATE ACTIVE: Target the MIDDLE item (Index 2)
+    function updateActive() {
+      const slides = document.querySelectorAll('.slide');
+      
+      // Remove active from all
+      slides.forEach(s => s.classList.remove('active'));
+      
+      // Add active to the 3rd item (Index 2), which is the exact center of 5 items
+      if(slides[2]) {
+          slides[2].classList.add('active');
+      }
+    }
+    // Run once on load
+    updateActive();
+    // 2. NEXT FUNCTION
+    function moveNext() {
+      track.style.transition = 'transform 0.5s linear';
+      track.style.transform = `translateX(-${slideWidth}px)`;
+      setTimeout(() => {
+        track.style.transition = 'none';
+        // Move first item to the end
+        track.appendChild(track.firstElementChild);
+        track.style.transform = 'translateX(0)';
+        updateActive();
+      }, 500);
+    }
+    // 3. PREV FUNCTION
+    function movePrev() {
+      track.style.transition = 'none';
+      // Move last item to the front
+      track.prepend(track.lastElementChild);
+      track.style.transform = `translateX(-${slideWidth}px)`;
+      setTimeout(() => {
+        track.style.transition = 'transform 0.5s ease';
+        track.style.transform = 'translateX(0)';
+        updateActive();
+      }, 20);
+    }
+    // 4. Event Listeners
+    nextBtn.addEventListener('click', () => {
+        moveNext();
+        resetTimer(); // Reset timer so it doesn't jump immediately after a click
+    });
+    prevBtn.addEventListener('click', () => {
+        movePrev();
+        resetTimer();
+    });
+    // 5. Auto Play Logic
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(moveNext, 2500);
+    }
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+    // Helper to reset timer on manual click
+    function resetTimer() {
+        stopAutoPlay();
+        startAutoPlay();
+    }
+    // Start the loop
+    startAutoPlay();
+  </script>
+</body>
+</html>

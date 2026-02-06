@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>RAVYN watches</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="./Styles/header-footer.css">
+  <link rel="stylesheet" href="./css/all.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.min.css">
+  <link rel="stylesheet" href="./Styles/responsive.css">
+  <style>
+    body{
+      font-family: arial;
+    }
+    .prodetails {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 100px;
+          margin-left: 0px;
+          margin-right: 0px;
+          padding: 0 80px;
+          box-shadow: 10px 10px 50px black;
+          border-radius: 20px;
+          background-color: transparent ;
+      }
+      .single-pro-image { width: 45%; margin-right: 50px; }
+      .main-img{
+        width: 100%;
+      }
+      .single-pro-details { width: 45%; padding-top: 30px; }
+      .single-pro-details select {
+         width: 70px;
+         height: 45px;
+         padding-left: 10px;
+         font-size: 20px;
+         margin-right: 10px;
+         display: block;
+         margin-bottom: 20px;
+        }
+      .add-cart-btn{ 
+        background: black;
+        color: #fff;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px;
+        font-size: 16px;
+      }
+      .buy-now-btn{
+        background: #fff;
+        color: black;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 60px;
+        font-size: 16px;
+        border: 2px solid black;
+      }
+      /* Classes for JS targeting (optional styling) */
+      .pro-name { font-size: 24px; margin-bottom: 10px; }
+      .pro-price { font-size: 26px; font-weight: bold; }
+      .pro-desc { line-height: 25px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <a href="index.html"><h1>RAVYN</h1></a>
+    </div>
+    <div class="header-right-section">
+        <a href="index.html"><p class="menu">Home</p></a>
+        <a href="about.html"><p class="menu">About</p></a>
+        <p class="menu">Contact</p>
+        <a href="cart.html"><i class="fa-solid fa-bag-shopping cart-button"><span>0</span></i></a>
+        <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
+    </div>
+    <div class="mobile">
+      <i id="bar" class="fas fa-outdent"></i>
+    </div>    
+  </header>
+
+  <section class="prodetails">
+    <div class="single-pro-image">
+        <img src="" width="400px" class="main-img" alt="Product Image">
+    </div>
+    
+    <div class="single-pro-details">
+      <h6>Home / Watches</h6>
+      
+      <h4 class="pro-name">Loading...</h4>
+      <h2 class="pro-price">Loading...</h2>
+      
+      <select class="quantity-input" value="1">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      <button class="add-cart-btn">Add To Cart</button>
+      <button class="buy-now-btn buy-btn">Buy Now</button>
+      
+      <h4>Product Details</h4>
+      <span class="pro-desc">Loading...</span>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-left-section">
+        <h1>RAVYN</h1>
+        <p class="footer-text">RAVYN Watches brings premium timepieces crafted for elegance, precision, and everyday style.</p>
+    </div>
+    <div class="footer-right-section">
+      <h2>Social</h2>
+      <div class="social-link">
+        <p><strong>Address: <br></strong> Sargodha , Pakistan</p>
+        <p><strong>Phone: <br></strong> +92-399-99999</p>
+        <p><strong>Email: <br></strong> info@support.com</p>
+      </div>
+      <div class="social-icon">
+        <i class="fa-brands fa-tiktok"></i>
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+      </div>
+    </div>
+  </footer>
+  <script src="./Script/data.js"></script>
+  <script>
+    
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      // querySelector finds the first element with this class
+      document.querySelector('.main-img').src = product.image;
+      document.querySelector('.pro-name').innerText = product.name;
+      document.querySelector('.pro-price').innerText = "Rs " + product.price + "/-";
+      document.querySelector('.pro-desc').innerText = product.des;
+
+
+      // --- WhatsApp Logic ---
+      const buyButton = document.querySelector('.buy-btn');
+      const quantityInput = document.querySelector('.quantity-input');
+
+      buyButton.addEventListener('click', () => {
+          // Get the current quantity
+          const quantity = quantityInput.value;
+          const total = product.price * quantity;
+
+          // YOUR PHONE NUMBER (No spaces, include country code)
+          const phoneNumber = "923107715463"; 
+
+          // Create the message
+          const message = `Hello, I want to order:
+Name: ${product.name}
+Price: Rs ${product.price}
+Quantity: ${quantity}
+Total: Rs ${total}
+--------------------
+Is it available?`;
+
+          // Open WhatsApp
+          const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+          window.open(url, '_blank');
+      });
+    } else {
+      document.querySelector('.single-pro-details').innerHTML = "<h2>Product Not Found</h2>";
+    }
+    if (product) {
+      // ... (Keep your existing image, name, price, desc code)
+
+      const quantityInput = document.querySelector('.quantity-input');
+      const addCartBtn = document.querySelector('.add-cart-btn');
+      const buyNowBtn = document.querySelector('.buy-now-btn');
+
+      // --- ADD TO CART LOGIC ---
+      addCartBtn.addEventListener('click', () => {
+        let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+        const quantity = parseInt(quantityInput.value);
+
+        // Check if product already exists in cart
+        const existingItem = cart.find(item => item.id === product.id);
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                quantity: quantity
+            });
+        }
+
+        localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+
+        // --- NEW FEEDBACK LOGIC ---
+        // 1. Save original styles and text
+        const originalText = addCartBtn.innerText;
+        const originalBg = addCartBtn.style.backgroundColor;
+        const originalColor = addCartBtn.style.color;
+        const originalBorder = addCartBtn.style.border;
+
+        // 2. Apply "Added" styles
+        addCartBtn.innerText = "Added to cart";
+        addCartBtn.style.backgroundColor = "white";
+        addCartBtn.style.border = "2px solid #088178";
+        addCartBtn.style.color = "#088178";
+        addCartBtn.style.fontSize = '16px';
+
+        // 3. Revert after 1 second (1000 milliseconds)
+        setTimeout(() => {
+            addCartBtn.innerText = originalText;
+            addCartBtn.style.backgroundColor = originalBg;
+            addCartBtn.style.color = originalColor;
+            addCartBtn.style.border = originalBorder;
+            addCartBtn.style.fontSize = '16px';
+            // Optional: Redirect to cart after the visual effect finishes
+            // window.location.href = 'cart.html'; 
+    }, 1000);
+});
+
+      // --- BUY NOW LOGIC (Direct to WhatsApp) ---
+      buyNowBtn.addEventListener('click', () => {
+          const quantity = quantityInput.value;
+          const total = product.price * quantity;
+          const phoneNumber = "923107715463"; 
+          const message = `Hello, I want to Buy Now:\nName: ${product.name}\nPrice: Rs ${product.price}\nQuantity: ${quantity}\nTotal: Rs ${total}\n--------------------\nIs it available?`;
+          
+          const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+          window.open(url, '_blank');
+      });
+    }
+
+  </script>
+</body>
+</html>

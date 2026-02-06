@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Your Cart - RAVYN</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Styles/header-footer.css">
+    <link rel="stylesheet" href="./Styles/responsive.css">
+    <link rel="stylesheet" href="./css/all.min.css">
+    <style>
+        .cart-container { padding: 100px 80px; min-height: 60vh; font-family: arial; }
+        .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .cart-table th { border-bottom: 2px solid #333; padding: 10px; text-align: left; }
+        .cart-table td { padding: 15px 10px; border-bottom: 1px solid #ddd; }
+        .cart-table img { width: 80px; border-radius: 10px; }
+        .checkout-section { text-align: right; margin-top: 20px; }
+        .grand-total { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        .buy-btn { 
+            background: #088178; 
+            color: white; 
+            padding: 15px 40px; 
+            border: none; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            font-size: 18px; 
+        }
+        .remove-btn { color: red; cursor: pointer; border: none; background: none; }
+    </style>
+</head>
+<body>
+  <header class="header">
+      <div class="logo-container">
+          <a href="index.html"><h1>RAVYN</h1></a>
+      </div>
+      <div class="header-right-section">
+          <a href="index.html"><p class="menu">Home</p></a>
+          <a href="about.html"><p class="menu">About</p></a>
+          <p class="menu">Contact</p>
+          <a href="cart.html"><i class="fa-solid fa-bag-shopping cart-button"></i></a>
+      </div>
+  </header>
+
+  <section class="cart-container">
+      <h1>Your Shopping Cart</h1>
+      <table class="cart-table">
+          <thead>
+              <tr>
+                  <th>Image</th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                  <th>Remove</th>
+              </tr>
+          </thead>
+          <tbody id="cart-items-body">
+              </tbody>
+      </table>
+
+      <div class="checkout-section">
+          <div class="grand-total" id="grand-total-display">Total: Rs 0/-</div>
+          <button class="buy-btn" onclick="checkoutViaWhatsApp()">Order via WhatsApp</button>
+      </div>
+  </section>
+
+  <script>
+      function renderCart() {
+          const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+          const tableBody = document.getElementById('cart-items-body');
+          let grandTotal = 0;
+
+          if (cart.length === 0) {
+              tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Your cart is empty.</td></tr>";
+              document.getElementById('grand-total-display').innerText = "Total: Rs 0/-";
+              return;
+          }
+
+          tableBody.innerHTML = cart.map((item, index) => {
+              const subtotal = item.price * item.quantity;
+              grandTotal += subtotal;
+              return `
+                  <tr>
+                      <td><img src="${item.image}" alt="${item.name}"></td>
+                      <td>${item.name}</td>
+                      <td>Rs ${item.price}</td>
+                      <td>${item.quantity}</td>
+                      <td>Rs ${subtotal}</td>
+                      <td><button class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button></td>
+                  </tr>
+              `;
+          }).join('');
+
+          document.getElementById('grand-total-display').innerText = "Total: Rs " + grandTotal + "/-";
+      }
+
+      function removeItem(index) {
+          let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+          cart.splice(index, 1);
+          localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+          renderCart();
+      }
+
+      function checkoutViaWhatsApp() {
+          const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+          if (cart.length === 0) return alert("Your cart is empty!");
+
+          let message = "Hello RAVYN, I would like to place an order:\n\n";
+          let total = 0;
+
+          cart.forEach(item => {
+              const subtotal = item.price * item.quantity;
+              message += `* ${item.name}\n  Qty: ${item.quantity} | Price: Rs ${subtotal}\n\n`;
+              total += subtotal;
+          });
+
+          message += `--------------------\n*Grand Total: Rs ${total}/-*\n\nPlease confirm availability.`;
+          
+          const phoneNumber = "923107715463"; 
+          const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+          window.open(url, '_blank');
+      }
+
+      // Initial render
+      renderCart();
+  </script>
+</body>
+</html>
