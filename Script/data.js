@@ -5,7 +5,7 @@ const products = [
     name: 'Bugatti Luxury Watch - Perfect for Atheletes',
     price: 19000,
     des: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae assumenda deserunt doloremque eaque nisi ea natus modi doloribus consectetur qui debitis praesentium eum aspernatur repellat quam, aliquam ab mollitia quos. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla obcaecati perspiciatis, temporibus quidem aut nihil quaerat quod alias, suscipit explicabo veniam ipsa similique neque repudiandae? Dolorem, deserunt! At, saepe cum!',
-    dis: 30,
+    dis: 10
   },
   {
     id: 'watch-men-2',

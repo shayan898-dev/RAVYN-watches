@@ -37,8 +37,6 @@
   </section>
 
   <section class="carousel-wrapper" onmouseover="stopAutoPlay()" onmouseout="startAutoPlay()">
-    <button class="nav-btn prev-btn" id="prevBtn">&#10094;</button>
-    <button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
 
     <div class="slider-container">
       <div class="slider-track">
@@ -122,6 +120,7 @@
           <p class="product-owner">RAVYN Watch</p>
           <div class="product-name-container"><h2 class="product-name">${product.name}</h2></div>
           <h4 class="product-price">Rs ${product.price}/-</h4>
+          <p class="discount-price">Rs ${product.dis}</p>
           <button class="js-buy-button" data-product-id="${product.id}">
             <i class="fa-solid fa-bag-shopping"></i>
           </button>
@@ -222,9 +221,6 @@
         updateActive();
       }, 20);
     }
-
-    nextBtn.addEventListener('click', () => { moveNext(); resetTimer(); });
-    prevBtn.addEventListener('click', () => { movePrev(); resetTimer(); });
 
     function startAutoPlay() { autoPlayInterval = setInterval(moveNext, 2500); }
     function stopAutoPlay() { clearInterval(autoPlayInterval); }

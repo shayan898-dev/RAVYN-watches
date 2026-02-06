@@ -127,6 +127,15 @@
   </footer>
   <script src="./Script/data.js"></script>
   <script>
+    const bar = document.getElementById('bar');
+    const nav = document.querySelector('.header-right-section');
+    const close = document.getElementById('close');
+    if (bar) {
+      bar.addEventListener('click', () => nav.classList.add('active'));
+    }
+    if (close) {
+      close.addEventListener('click', () => nav.classList.remove('active'));
+    }
     
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');

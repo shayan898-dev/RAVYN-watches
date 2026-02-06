@@ -1,145 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Your Cart - RAVYN</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./Styles/header-footer.css">
-    <link rel="stylesheet" href="./Styles/responsive.css">
-    <link rel="stylesheet" href="./css/all.min.css">
-    <style>
-        .cart-container { padding: 100px 80px; min-height: 60vh; font-family: arial; }
-        .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-        .cart-table th { border-bottom: 2px solid #333; padding: 10px; text-align: left; }
-        .cart-table td { padding: 15px 10px; border-bottom: 1px solid #ddd; }
-        .cart-table img { width: 80px; border-radius: 10px; }
-        .checkout-section { text-align: right; margin-top: 20px; }
-        .grand-total { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-        .buy-btn { 
-            background: #088178; 
-            color: white; 
-            padding: 15px 40px; 
-            border: none; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            font-size: 18px; 
-        }
-        .remove-btn { color: red; cursor: pointer; border: none; background: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - RAVYN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/all.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.min.css">
+  <link rel="stylesheet" href="./Styles/header-footer.css">
+  <link rel="stylesheet" href="./Styles/responsive.css">
+  
+  <style>
+    /* --- RESET & FONTS --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    body { background-color: rgb(240, 240, 240); color: #333; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* --- CART PAGE STYLES --- */
+    
+    /* 1. Page Title Area */
+    .cart-header-banner {
+      margin-top: 80px;
+      background-color: #888;
+      color: #fff;
+      text-align: center;
+      padding: 40px 0;
+      margin-bottom: 40px;
+    }
+    .cart-header-banner h2 { font-size: 28px; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
+
+    /* 2. Cart Container */
+    .cart-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      margin-bottom: 80px;
+    }
+
+    /* 3. Table Headers (Desktop) */
+    .cart-table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #000;
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .header-col.center { text-align: center; }
+    .header-col.right { text-align: right; }
+
+    /* 4. Cart Item Row */
+    .cart-item {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      align-items: center;
+      padding: 20px;
+      /* Full border around product */
+      border: 1px solid black;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+
+    /* Product Section */
+    .product-info { display: flex; gap: 20px; align-items: flex-start; }
+    .product-img { width: 100px; height: 100px; object-fit: cover; border-radius: 4px; background: #f9f9f9; }
+    .product-details { display: flex; flex-direction: column; gap: 10px; }
+    .product-name { font-size: 16px; font-weight: 600; color: #222; max-width: 250px; line-height: 1.4; }
+    .remove-btn { 
+      cursor: pointer; font-size: 18px; color: #666; transition: 0.2s; align-self: flex-start; 
+    }
+    .remove-btn:hover { color: #ff4444; }
+
+    /* Price Section */
+    .price-col { text-align: center; display: inline; }
+    .old-price { text-decoration: line-through; color: #999; font-size: 14px; margin-right: 8px; display: inline; }
+    .current-price { color: #ff4444; font-weight: 600; font-size: 16px; display: inline; }
+
+    /* Quantity Section */
+    .quantity-col { display: flex; justify-content: center; }
+    .quantity-selector {
+      display: flex; align-items: center; border: 1px solid #333; border-radius: 25px; padding: 5px 10px; width: 100px; justify-content: space-between;
+    }
+    .qty-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 5px; }
+    .qty-input { width: 30px; border: none; text-align: center; font-size: 16px; font-weight: 600; outline: none; }
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+    /* Total Section */
+    .total-col { text-align: right; font-weight: 700; font-size: 16px; }
+
+    /* 5. Cart Footer */
+    .cart-footer {
+      display: flex; flex-direction: column; align-items: flex-end;
+      margin-top: 40px; gap: 20px;
+    }
+    .subtotal-area { display: flex; align-items: center; gap: 20px; font-size: 20px; font-weight: 700; color: black; }
+    .checkout-btn {
+      background-color: #000; color: #fff;
+      padding: 15px 40px; border: none; border-radius: 30px;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      transition: all 0.3s;
+    }
+    .checkout-btn:hover { background-color: #333; }
+
+    /* --- EMPTY CART MESSAGE --- */
+    .empty-cart-msg { text-align: center; padding: 50px; font-size: 18px; color: #666; display: none; }
+    .empty-cart-msg a { text-decoration: underline; color: #000; }
+
+    /* --- RESPONSIVE MEDIA QUERIES --- */
+    /*
+    @media (max-width: 900px) {
+      .cart-table-header { display: none; }
+
+      .cart-item {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        position: relative;
+      }
+      .subtotal-area{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;  
+        color: black;
+      }
+      .checkout-btn {
+      width: 100%;
+      }
+      .product-info { width: 100%; border-bottom: 1px solid black; padding-bottom: 15px; }
+      
+      .item-bottom-row {
+        display: grid; grid-template-columns: 1fr 1fr 1fr;
+      }
+      
+      .price-col { width: 100px;display: inline;}
+      .quantity-col {width: 100px; display: inline; }
+      .total-col { width: 100px;display: inline; }
+    }
+    */
+    @media (max-width: 500px) {
+      .cart-header-banner{
+        margin-top: 50px;
+      }
+      .cart-header-banner h2 { font-size: 20px; }
+      
+      .product-info { flex-direction: row; gap: 15px; }
+      .product-img { width: 80px; height: 80px; }
+      .product-name { font-size: 14px; }
+      .checkout-btn {
+        width: 100%;
+      }
+      .cart-item { display: block; }
+      .price-col, .quantity-col, .total-col {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-top: 15px; 
+        width: 100%;
+      }
+      #tableHeader{
+        display: none;
+      }
+      
+      .price-col::before { content: "Price:"; font-weight: 600; color: black; }
+      .quantity-col::before { content: "Qty:"; font-weight: 600; color: black; }
+      .total-col::before { content: "Total:"; font-weight: 600; color: black; }
+
+      .quantity-selector { margin-left: auto; }
+      .total-col { font-size: 18px; border-top: 1px solid gray; padding-top: 15px; }
+    }
+  </style>
 </head>
 <body>
   <header class="header">
-      <div class="logo-container">
-          <a href="index.html"><h1>RAVYN</h1></a>
-      </div>
-      <div class="header-right-section">
-          <a href="index.html"><p class="menu">Home</p></a>
-          <a href="about.html"><p class="menu">About</p></a>
-          <p class="menu">Contact</p>
-          <a href="cart.html"><i class="fa-solid fa-bag-shopping cart-button"></i></a>
-      </div>
+    <div class="logo-container">
+      <a href="index.html"><h1>RAVYN</h1></a>
+    </div>
+    <div class="header-right-section">
+        <a href="index.html"><p class="menu">Home</p></a>
+        <a href="about.html"><p class="menu">About</p></a>
+        <p class="menu">Contact</p>
+        <a href="cart.html"><i class="fa-solid fa-bag-shopping cart-button"><span>0</span></i></a>
+        <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
+    </div>
+    <div class="mobile">
+      <i id="bar" class="fas fa-outdent"></i>
+    </div>    
   </header>
 
-  <section class="cart-container">
-      <h1>Your Shopping Cart</h1>
-      <table class="cart-table">
-          <thead>
-              <tr>
-                  <th>Image</th>
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Subtotal</th>
-                  <th>Remove</th>
-              </tr>
-          </thead>
-          <tbody id="cart-items-body">
-              </tbody>
-      </table>
+  <section class="cart-header-banner">
+    <h2>Shopping Cart</h2>
+  </section>
 
-      <div class="checkout-section">
-          <div class="grand-total" id="grand-total-display">Total: Rs 0/-</div>
-          <button class="buy-btn" onclick="checkoutViaWhatsApp()">Order via WhatsApp</button>
+  <section class="cart-container">
+    
+    <div class="cart-table-header" id="tableHeader">
+      <div class="header-col">Product</div>
+      <div class="header-col center">Price</div>
+      <div class="header-col center">Quantity</div>
+      <div class="header-col right">Total</div>
+    </div>
+
+    <div id="cartItemsWrapper">
       </div>
+
+    <div class="empty-cart-msg" id="emptyCartMsg">
+      <p>Your cart is empty. <a href="index.html">Start Shopping</a></p>
+    </div>
+
+    <div class="cart-footer" id="cartFooter">
+      <div class="subtotal-area">
+        <span>SUBTOTAL:</span>
+        <span id="subtotalDisplay">Rs 0.00</span>
+      </div>
+      <button class="checkout-btn" onclick="alert('Proceeding to Checkout...')">Check Out</button>
+    </div>
+
   </section>
 
   <script>
-    updateCartCount();
+    let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
 
-    function removeItem(index) {
-      let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-      cart.splice(index, 1);
-      localStorage.setItem('ravyn_cart', JSON.stringify(cart));
-      
-      renderCart();
-      updateCartCount(); // <--- CALL IT HERE
-    }
-    
     function renderCart() {
-      const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-      const tableBody = document.getElementById('cart-items-body');
-      let grandTotal = 0;
+      const wrapper = document.getElementById('cartItemsWrapper');
+      const tableHeader = document.getElementById('tableHeader');
+      const footer = document.getElementById('cartFooter');
+      const emptyMsg = document.getElementById('emptyCartMsg');
+      
+      // Attempts to find the cart badge in your pasted header
+      const countBadge = document.querySelector('.cart-button span');
+
+      wrapper.innerHTML = ''; 
+      let subtotal = 0;
+      let totalItems = 0;
 
       if (cart.length === 0) {
-          tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Your cart is empty.</td></tr>";
-          document.getElementById('grand-total-display').innerText = "Total: Rs 0/-";
-          return;
+        wrapper.style.display = 'none';
+        tableHeader.style.display = 'none';
+        footer.style.display = 'none';
+        emptyMsg.style.display = 'block';
+        if(countBadge) countBadge.style.display = 'none';
+        return;
       }
 
-      tableBody.innerHTML = cart.map((item, index) => {
-          const subtotal = item.price * item.quantity;
-          grandTotal += subtotal;
-          return `
-            <tr>
-              <td><img src="${item.image}" alt="${item.name}"></td>
-              <td>${item.name}</td>
-              <td>Rs ${item.price}</td>
-              <td>${item.quantity}</td>
-              <td>Rs ${subtotal}</td>
-              <td><button class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button></td>
-            </tr>
-          `;
-      }).join('');
+      wrapper.style.display = 'block';
+      if(window.innerWidth > 900) tableHeader.style.display = 'grid'; 
+      footer.style.display = 'flex';
+      emptyMsg.style.display = 'none';
+      if(countBadge) countBadge.style.display = 'flex';
 
-      document.getElementById('grand-total-display').innerText = "Total: Rs " + grandTotal + "/-";
+      cart.forEach((product, index) => {
+        const lineTotal = product.price * product.quantity;
+        subtotal += lineTotal;
+        totalItems += product.quantity;
+        const oldPrice = Math.floor(product.price * 1.3); 
+
+        const html = `
+          <div class="cart-item">
+            <div class="product-info">
+              <img src="${product.image}" alt="${product.name}" class="product-img">
+              <div class="product-details">
+                <p class="product-name">${product.name}</p>
+                <i class="fa-regular fa-trash-can remove-btn" onclick="removeItem(${index})"></i>
+              </div>
+            </div>
+
+            <div class="item-bottom-row" style="display: contents;"> 
+              <div class="price-col">
+                <span class="old-price">Rs.${oldPrice}</span>
+                <span class="current-price">Rs.${product.price}</span>
+              </div>
+              <div class="quantity-col">
+                <div class="quantity-selector">
+                  <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                  <input type="number" class="qty-input" value="${product.quantity}" readonly>
+                  <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                </div>
+              </div>
+              <div class="total-col">
+                Rs.${lineTotal.toLocaleString()}
+              </div>
+            </div>
+          </div>
+        `;
+        wrapper.innerHTML += html;
+      });
+
+      document.getElementById('subtotalDisplay').innerText = `Rs ${subtotal.toLocaleString()}.00`;
+      
+      // Update the header badge if it exists
+      if(countBadge) countBadge.innerText = totalItems;
+    }
+
+    function updateQty(index, change) {
+      if (cart[index].quantity + change > 0) {
+        cart[index].quantity += change;
+      }
+      saveAndRender();
     }
 
     function removeItem(index) {
-        let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-        cart.splice(index, 1);
-        localStorage.setItem('ravyn_cart', JSON.stringify(cart));
-        renderCart();
+      cart.splice(index, 1);
+      saveAndRender();
     }
 
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-      const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-      const countElement = document.querySelector('.cart-button span');
-      if (countElement) countElement.innerText = totalCount;
+    function saveAndRender() {
+      localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+      renderCart();
     }
 
-    function checkoutViaWhatsApp() {
-        const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-        if (cart.length === 0) return alert("Your cart is empty!");
-
-        let message = "Hello RAVYN, I would like to place an order:\n\n";
-        let total = 0;
-
-        cart.forEach(item => {
-            const subtotal = item.price * item.quantity;
-            message += `* ${item.name}\n  Qty: ${item.quantity} | Price: Rs ${subtotal}\n\n`;
-            total += subtotal;
-        });
-
-        message += `--------------------\n*Grand Total: Rs ${total}/-*\n\nPlease confirm availability.`;
-        
-        const phoneNumber = "923107715463"; 
-        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-    }
-
-    // Initial render
     renderCart();
+
+    window.addEventListener('resize', () => {
+      const tableHeader = document.getElementById('tableHeader');
+      if(cart.length > 0) {
+         if(window.innerWidth > 900) {
+           tableHeader.style.display = 'grid';
+         } else if (window.innerWidth <= 500) {
+            tableHeader.style.display = 'none';
+         }
+      }
+    });
   </script>
 </body>
 </html>
