@@ -74,6 +74,7 @@
       renderCart();
       updateCartCount(); // <--- CALL IT HERE
     }
+    
     function renderCart() {
       const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
       const tableBody = document.getElementById('cart-items-body');
