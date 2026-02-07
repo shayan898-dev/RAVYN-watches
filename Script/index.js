@@ -2,6 +2,7 @@
 const bar = document.getElementById('bar');
 const nav = document.querySelector('.header-right-section');
 const close = document.getElementById('close');
+
 if (bar) {
   bar.addEventListener('click', () => nav.classList.add('active'));
 }
@@ -9,46 +10,33 @@ if (close) {
   close.addEventListener('click', () => nav.classList.remove('active'));
 }
 
-// Function to filter and generate HTML
-// Function to filter and generate HTML
+// --- 2. Product Rendering Function ---
 function renderProducts(category, limit, containerSelector) {
   const container = document.querySelector(containerSelector);
   if (!container) return; 
 
-  // 1. Filter the products
   let filteredList = products;
   if (category !== 'all') {
     filteredList = products.filter(p => p.category === category);
   }
 
-  // 2. Limit the number of products
   if (limit) {
     filteredList = filteredList.slice(0, limit);
   }
 
-  // 3. Generate the HTML
   let html = '';
   filteredList.forEach(product => {
-    
-    // --- NEW LOGIC: Calculate Discount ---
     const hasDiscount = product.dis > 0;
-    // Calculate final price: Original - (Original * (Discount / 100))
     const finalPrice = hasDiscount 
         ? Math.floor(product.price - (product.price * (product.dis / 100))) 
         : product.price;
 
-    // Create the HTML for the price section
-    // If discount exists: Show crossed-out original + New Price
-    // If no discount: Just show original price
     const priceDisplay = hasDiscount 
-        ? `
-           <div class="price-stack">
+        ? `<div class="price-stack">
              <p class="discount-price">Rs ${product.price}</p>
              <h4 class="product-price">Rs ${finalPrice}/-</h4>
-           </div>
-          `
+           </div>`
         : `<h4 class="product-price">Rs ${product.price}/-</h4>`;
-    // -------------------------------------
 
     html += `
       <div class="products js-product" onclick="window.location.href='Product-detail.html?id=${product.id}'">
@@ -61,7 +49,6 @@ function renderProducts(category, limit, containerSelector) {
         <div class="product-bottom">
           <p class="product-owner">RAVYN Watch</p>
           <div class="product-name-container"><h2 class="product-name">${product.name}</h2></div>
-          
           <div class="parice-button-container"> 
             ${priceDisplay} <i class="fa-solid fa-cart-shopping"></i>
           </div>
@@ -73,48 +60,56 @@ function renderProducts(category, limit, containerSelector) {
   container.innerHTML = html;
 }
 
-// --- CALL THE FUNCTIONS ---
+// --- 3. EXECUTION LOGIC (STRICT SEPARATION) ---
 
-// 1. Home Page: "All Products" section (Limit 8)
-renderProducts('all', 8, '.js-product-grid');
+// Check which page we are currently on
+const collectionContainer = document.querySelector('.js-collection-grid');
+const homeContainer = document.querySelector('.js-product-grid');
 
-// 2. Home Page: "Men Watches" section (Limit 4)
-renderProducts('men-watch', 4, '.js-product-grid-men');
+if (collectionContainer) {
+  // WE ARE ON COLLECTION PAGE
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryParam = urlParams.get('category') || 'all'; 
+  renderProducts(categoryParam, null, '.js-collection-grid');
+} 
+else if (homeContainer) {
+  // WE ARE ON HOME PAGE - Render all sections
+  renderProducts('all', 8, '.js-product-grid');
+  renderProducts('men-watch', 4, '.js-product-grid-men');
+  renderProducts('women-watch', 4, '.js-product-grid-women');
+  renderProducts('rolex-watch', 4, '.js-product-grid-rolex');
+  renderProducts('patek-watch', 4, '.js-product-grid-patek');
+  renderProducts('automatic-watch', 4, '.js-product-grid-automatic');
+}
 
-// 3. Collection Page: (Show everything)
-renderProducts('all', null, '.js-collection-grid');
-// --- 4. Cart Count Logic (Runs on Load & Update) ---
+// --- 4. Utilities ---
+
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
   const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-  
   const countElement = document.querySelector('.cart-button span');
   if (countElement) {
     countElement.innerText = totalCount;
-    // Hide badge if 0, show if > 0
     countElement.style.display = totalCount > 0 ? 'block' : 'none';
   }
 }
-
-// Run immediately on page load
 updateCartCount();
 
-
-// --- 5. Slider Logic (Unchanged) ---
+// Slider Logic
 const track = document.querySelector('.slider-track');
-const nextBtn = document.getElementById('nextBtn');
-const prevBtn = document.getElementById('prevBtn');
 const slideWidth = 200; 
 let autoPlayInterval;
 
 function updateActive() {
   const slides = document.querySelectorAll('.slide');
-  slides.forEach(s => s.classList.remove('active'));
-  if(slides[2]) slides[2].classList.add('active');
+  if (slides.length > 0) {
+    slides.forEach(s => s.classList.remove('active'));
+    if(slides[2]) slides[2].classList.add('active');
+  }
 }
-updateActive();
 
 function moveNext() {
+  if (!track) return;
   track.style.transition = 'transform 0.5s linear';
   track.style.transform = `translateX(-${slideWidth}px)`;
   setTimeout(() => {
@@ -125,29 +120,17 @@ function moveNext() {
   }, 500);
 }
 
-function movePrev() {
-  track.style.transition = 'none';
-  track.prepend(track.lastElementChild);
-  track.style.transform = `translateX(-${slideWidth}px)`;
-  setTimeout(() => {
-    track.style.transition = 'transform 0.5s ease';
-    track.style.transform = 'translateX(0)';
-    updateActive();
-  }, 20);
-}
-
-function startAutoPlay() { autoPlayInterval = setInterval(moveNext, 2500); }
+function startAutoPlay() { if(track) autoPlayInterval = setInterval(moveNext, 2500); }
 function stopAutoPlay() { clearInterval(autoPlayInterval); }
-function resetTimer() { stopAutoPlay(); startAutoPlay(); }
-startAutoPlay();
+if (track) {
+  updateActive();
+  startAutoPlay();
+}
 
 const exploreBtn = document.getElementById('exploreBtn');
 const featuredSection = document.querySelector('.fe-products');
-
 if (exploreBtn && featuredSection) {
   exploreBtn.addEventListener('click', () => {
-    featuredSection.scrollIntoView({ 
-      behavior: 'smooth', 
-    });
+    featuredSection.scrollIntoView({ behavior: 'smooth' });
   });
 }

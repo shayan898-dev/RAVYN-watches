@@ -1,6 +1,6 @@
 @media (max-width: 1200px){
   .products-grid{
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
     }
   .fe{
     flex: 0 0 5%;
@@ -80,7 +80,7 @@
   }
   .products-grid{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     padding: 20px 50px;
     column-gap: 25px;
     row-gap: 30px;

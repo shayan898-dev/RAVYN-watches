@@ -81,13 +81,15 @@ i{
   margin-bottom: 30px;
   display: inline-block;
 }
-.products-grid{
+.products-grid {
   display: grid;
-  align-content: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Automatically adjusts columns */
+  justify-content: center; /* Centers the columns within the container */
   padding: 40px 60px;
   column-gap: 20px;
   row-gap: 30px;
+  max-width: 1200px;       /* Keeps the grid from becoming too wide on large screens */
+  margin: 0 auto;          /* Centers the grid container itself */
 }
 .dis-container-display{
   display: none;
