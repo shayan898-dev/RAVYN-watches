@@ -17,6 +17,99 @@
 .logo-container h1{
   font-family: 'Times New Roman', Times, serif;
 }
+.search-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 20px;
+  padding: 5px 15px;
+  margin-right: 20px; /* Spacing from menu items */
+  border: 1px solid #ccc;
+}
+
+.search-container input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  width: 150px; /* Adjust width as needed */
+  font-family: inherit;
+}
+
+.search-container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: gray;
+}
+/* Ensure the search container is relative so suggestions position correctly */
+.search-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 20px;
+  padding: 5px 15px;
+  margin-right: 20px;
+  border: 1px solid #ccc;
+  position: relative; /* CRITICAL for positioning the dropdown */
+}
+
+/* The Dropdown Box */
+.search-suggestions {
+  position: absolute;
+  top: 100%; /* Push it right below the input */
+  left: 0;
+  width: 100%; /* Match width of search bar */
+  background: white;
+  border: 1px solid #ddd;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  max-height: 300px; /* Scroll if too many results */
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: none; /* Hidden by default */
+  z-index: 1001;
+}
+
+/* Individual Suggestion Item */
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: #f9f9f9;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+/* Product Image in Suggestion */
+.suggestion-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Product Name in Suggestion */
+.suggestion-info h4 {
+  font-size: 13px;
+  margin: 0;
+  color: #333;
+  font-family: arial, sans-serif;
+}
+
+.suggestion-info p {
+  font-size: 11px;
+  margin: 2px 0 0 0;
+  color: #777;
+}
 .header-right-section{
   display: flex;
   justify-content: space-between;

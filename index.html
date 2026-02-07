@@ -16,12 +16,20 @@
     <div class="logo-container">
       <a href="index.html"><h1>RAVYN</h1></a>
     </div>
+    
     <div class="header-right-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search watches..." autocomplete="off">
+            <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+
         <a href="index.html"><p class="menu">Home</p></a>
         <a href="about.html"><p class="menu">About</p></a>
         <a href="cart.html"><i class="fa-solid fa-cart-shopping cart-button"><span>0</span></i></a>
         <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
     </div>
+
     <div class="mobile">
       <i id="bar" class="fas fa-outdent"></i>
     </div>    
@@ -122,22 +130,41 @@
   </footer>
 
   <div class="mobile-navbar">
-    <a href="index.html" class="mobile-nav-item">
-      <i class="fa-solid fa-house"></i>
-      <span class="label">Home</span>
-    </a>
-    <a href="collection.html" class="mobile-nav-item">
-      <i class="fa-solid fa-shop"></i>
-      <span class="label">Shop</span>
-    </a>
-    <a href="cart.html" class="mobile-nav-item">
-      <i class="fa-solid fa-cart-shopping"></i>
-      <span class="label">Cart</span>
-    </a>
-    <a href="contact.html" class="mobile-nav-item">
-      <i class="fa-solid fa-envelope"></i>
-      <span class="label">Contact</span>
-    </a>
+  <a href="index.html" class="mobile-nav-item">
+    <i class="fa-solid fa-house"></i>
+    <span class="label">Home</span>
+  </a>
+  <a href="collection.html" class="mobile-nav-item">
+    <i class="fa-solid fa-shop"></i>
+    <span class="label">Shop</span>
+  </a>
+  <a href="cart.html" class="mobile-nav-item">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span class="label">Cart</span>
+  </a>
+  <a href="contact.html" class="mobile-nav-item">
+    <i class="fa-solid fa-envelope"></i>
+    <span class="label">Contact</span>
+  </a>
+  
+  <div class="mobile-nav-item" id="mobileSearchTrigger">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="label">Search</span>
+  </div>
+  </div>
+
+  <div class="search-side-panel" id="sideSearchPanel">
+      <div class="panel-header">
+          <h2>Search</h2>
+          <i class="fa-solid fa-xmark" id="closeSideSearch"></i>
+      </div>
+      <div class="panel-body">
+          <div class="mobile-search-box">
+              <input type="text" id="sideSearchInput" placeholder="Search watches..." autocomplete="off">
+              <button id="sideSearchBtn"><i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+          <div class="search-suggestions" id="sideSearchSuggestions"></div>
+      </div>
   </div>
 
   <script src="./Script/data.js"></script>

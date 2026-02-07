@@ -1,4 +1,4 @@
-// --- 1. Mobile Menu Logic ---
+// --- 1. Mobile Menu Logic (Hamburger Menu) ---
 const bar = document.getElementById('bar');
 const nav = document.querySelector('.header-right-section');
 const close = document.getElementById('close');
@@ -10,13 +10,99 @@ if (close) {
   close.addEventListener('click', () => nav.classList.remove('active'));
 }
 
-// --- 2. Product Rendering Function ---
-function renderProducts(category, limit, containerSelector) {
+// --- 2. Mobile Side Search Panel Logic ---
+const mobileSearchTrigger = document.getElementById('mobileSearchTrigger');
+const sideSearchPanel = document.getElementById('sideSearchPanel');
+const closeSideSearch = document.getElementById('closeSideSearch');
+
+if (mobileSearchTrigger && sideSearchPanel) {
+    mobileSearchTrigger.addEventListener('click', () => {
+        sideSearchPanel.classList.add('active'); // Slides in from the right
+        // Automatically focus the input for the user
+        setTimeout(() => document.getElementById('sideSearchInput').focus(), 300);
+    });
+}
+
+if (closeSideSearch && sideSearchPanel) {
+    closeSideSearch.addEventListener('click', () => {
+        sideSearchPanel.classList.remove('active'); // Slides out to the right
+    });
+}
+
+// --- 3. Unified Search & Suggestion Logic ---
+function setupSearch(inputId, btnId, suggestionsId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    const suggestionsBox = document.getElementById(suggestionsId);
+
+    if (!input || !suggestionsBox) return;
+
+    // Handle instant suggestions as the user types
+    input.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        suggestionsBox.innerHTML = '';
+
+        if (query.length === 0) {
+            suggestionsBox.style.display = 'none';
+            return;
+        }
+
+        const matches = products.filter(p => p.name.toLowerCase().includes(query));
+
+        if (matches.length > 0) {
+            matches.forEach(product => {
+                const div = document.createElement('div');
+                div.classList.add('suggestion-item');
+                div.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="suggestion-img">
+                    <div class="suggestion-info">
+                        <h4>${product.name}</h4>
+                        <p>Rs ${product.price}</p>
+                    </div>
+                `;
+                div.addEventListener('click', () => {
+                    window.location.href = `Product-detail.html?id=${product.id}`;
+                });
+                suggestionsBox.appendChild(div);
+            });
+            suggestionsBox.style.display = 'block';
+        } else {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+
+    // Execute full search on Enter or Button Click
+    const execute = () => {
+        const query = input.value.trim();
+        if (query) {
+            window.location.href = `collection.html?search=${encodeURIComponent(query)}`;
+        }
+    };
+
+    if (btn) btn.addEventListener('click', execute);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') execute();
+    });
+
+    // Close suggestions if clicking outside the search area
+    document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+}
+
+// Initialize Desktop and Mobile Side-Panel searches
+setupSearch('searchInput', 'searchBtn', 'searchSuggestions');
+setupSearch('sideSearchInput', 'sideSearchBtn', 'sideSearchSuggestions');
+
+// --- 4. Product Rendering Function ---
+function renderProducts(category, limit, containerSelector, customList = null) {
   const container = document.querySelector(containerSelector);
   if (!container) return; 
 
-  let filteredList = products;
-  if (category !== 'all') {
+  let filteredList = customList || products;
+  if (!customList && category !== 'all') {
     filteredList = products.filter(p => p.category === category);
   }
 
@@ -25,6 +111,12 @@ function renderProducts(category, limit, containerSelector) {
   }
 
   let html = '';
+  
+  if (filteredList.length === 0) {
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; font-size: 20px; padding: 50px;">No products found.</p>`;
+    return;
+  }
+
   filteredList.forEach(product => {
     const hasDiscount = product.dis > 0;
     const finalPrice = hasDiscount 
@@ -60,20 +152,31 @@ function renderProducts(category, limit, containerSelector) {
   container.innerHTML = html;
 }
 
-// --- 3. EXECUTION LOGIC (STRICT SEPARATION) ---
-
-// Check which page we are currently on
+// --- 5. EXECUTION LOGIC ---
 const collectionContainer = document.querySelector('.js-collection-grid');
 const homeContainer = document.querySelector('.js-product-grid');
 
 if (collectionContainer) {
-  // WE ARE ON COLLECTION PAGE
   const urlParams = new URLSearchParams(window.location.search);
   const categoryParam = urlParams.get('category') || 'all'; 
-  renderProducts(categoryParam, null, '.js-collection-grid');
+  const searchParam = urlParams.get('search');
+
+  if (searchParam) {
+    const query = searchParam.toLowerCase();
+    const searchResults = products.filter(p => 
+      p.name.toLowerCase().includes(query) || 
+      p.category.toLowerCase().includes(query)
+    );
+    
+    const heading = document.querySelector('.product-heading');
+    if (heading) heading.innerText = `Search Results for: "${searchParam}"`;
+    
+    renderProducts(null, null, '.js-collection-grid', searchResults);
+  } else {
+    renderProducts(categoryParam, null, '.js-collection-grid');
+  }
 } 
 else if (homeContainer) {
-  // WE ARE ON HOME PAGE - Render all sections
   renderProducts('all', 8, '.js-product-grid');
   renderProducts('men-watch', 4, '.js-product-grid-men');
   renderProducts('women-watch', 4, '.js-product-grid-women');
@@ -82,7 +185,7 @@ else if (homeContainer) {
   renderProducts('automatic-watch', 4, '.js-product-grid-automatic');
 }
 
-// --- 4. Utilities ---
+// --- 6. Utilities ---
 
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
@@ -95,7 +198,6 @@ function updateCartCount() {
 }
 updateCartCount();
 
-// Slider Logic
 const track = document.querySelector('.slider-track');
 const slideWidth = 200; 
 let autoPlayInterval;
