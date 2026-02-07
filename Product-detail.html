@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>RAVYN watches</title>
+  <title>RAVYN Watches - Product Detail</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -9,60 +9,394 @@
   <link rel="stylesheet" href="./css/all.min.css">
   <link rel="stylesheet" href="./css/fontawesome.min.css">
   <link rel="stylesheet" href="./Styles/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
   <style>
-    body{
-      font-family: arial;
-    }
-    .prodetails {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 100px;
-          margin-left: 0px;
-          margin-right: 0px;
-          padding: 0 80px;
-          box-shadow: 10px 10px 50px black;
-          border-radius: 20px;
-          background-color: transparent ;
+    /* --- Global Reset & Body --- */
+    * {
+        box-sizing: border-box; /* Ensures padding doesn't break layout */
       }
-      .single-pro-image { width: 45%; margin-right: 50px; }
-      .main-img{
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        background-color: rgb(240, 240, 240);
+      }
+
+      /* --- Main Product Container --- */
+      .prodetails {
+        width: 100%;
+        display: flex;
+        padding: 40px 60px  ;
+        background-color: #fff;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      }
+
+      /* --- Left Side: Images --- */
+      .single-pro-image {
+        width: 40%;
+        margin-right: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .main-img {
+        width: 280px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+      }
+
+      /* Gallery Grid */
+      .small-img-group {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* Allows multiple rows of images */
+        gap: 10px; /* Space between thumbnails */
         width: 100%;
       }
-      .single-pro-details { width: 45%; padding-top: 30px; }
-      .single-pro-details select {
-         width: 70px;
-         height: 45px;
-         padding-left: 10px;
-         font-size: 20px;
-         margin-right: 10px;
-         display: block;
-         margin-bottom: 20px;
-        }
-      .add-cart-btn{ 
-        background: black;
-        color: #fff;
-        padding: 12px 20px;
-        border: none;
+
+      .small-img-col {
+        flex-basis: 20%; /* Fits ~4 images per row */
         cursor: pointer;
-        border-radius: 20px;
-        font-size: 16px;
       }
-      .buy-now-btn{
+
+      .small-img-col img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        transition: transform 0.2s ease;
+      }
+
+      .small-img-col img:hover {
+        transform: scale(1.05);
+        border-color: black;
+      }
+
+      /* --- Right Side: Details --- */
+      .single-pro-details {
+        width: 50%;
+        padding-top: 0px;
+      }
+
+      .single-pro-details h6 {
+        font-size: 14px;
+        color: #555;
+        margin: 0 0 20px 0;
+      }
+
+      .pro-name {
+        font-size: 28px;
+        margin-bottom: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .pro-price {
+        font-size: 26px;
+        font-weight: bold;
+        color: #088178; /* Theme color */
+        margin-bottom: 20px;
+      }
+      .button-container{
+        display: flex;
+        width: 100%;
+      }
+      .quantity-container {
+        display: flex;
+        align-items: center;
+        border: 1.5px solid #000; /* Made slightly thicker to match your theme */
+        border-radius: 50px;       /* This creates the "Pill" shape */
+        width: 130px; 
+        margin-bottom: 20px;
+        overflow: hidden;         /* Keeps the button backgrounds inside the rounded border */
+        background-color: #fff;
+      }
+
+      /* The Input Field (Center) */
+      .quantity-input {
+        width: 40px;
+        text-align: center;
+        border: none;
+        font-size: 18px;
+        font-weight: bold;
+        outline: none;
+        background: transparent;
+        pointer-events: none;
+      }
+
+      /* The Buttons (+ and -) */
+      .qty-btn {
+        flex: 1;
+        background-color: transparent; /* Changed to transparent for a cleaner look */
+        border: none;
+        height: 40px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Hover effect for buttons */
+      .qty-btn:hover {
+        background-color: #f0f0f0;
+      }
+
+      .qty-btn:active {
+        background-color: #e0e0e0;
+      }
+
+      /* Buttons */
+      .add-cart-btn { 
         background: #fff;
         color: black;
-        padding: 12px 20px;
-        border: none;
-        cursor: pointer;
-        border-radius: 60px;
-        font-size: 16px;
+        padding: 11px 30px;
         border: 2px solid black;
+        cursor: pointer;
+        border-radius: 25px;
+        font-size: 16px;
+        transition: 0.3s;
+        margin-top: 0px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 20px; /* Adds space if they stack */
       }
-      /* Classes for JS targeting (optional styling) */
-      .pro-name { font-size: 24px; margin-bottom: 10px; }
-      .pro-price { font-size: 26px; font-weight: bold; }
-      .pro-desc { line-height: 25px; }
+      
+      .add-cart-btn:hover {
+        background: black;
+        color: white;
+      }
+
+      .buy-now-btn {
+        background: black;
+        color: #fff;
+        padding: 14px 30px;
+        border: 2px solid black;
+        cursor: pointer;
+        border-radius: 25px;
+        font-size: 16px;
+        transition: 0.3s;
+        margin-bottom: 10px;
+        width: 49%;
+      }
+
+      .buy-now-btn:hover {
+        background: black;
+        color: white;
+      }
+
+      .single-pro-details h4 {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        font-size: 20px;
+      }
+
+      .pro-desc {
+        line-height: 1.6;
+        color: #555;
+        font-size: 16px;
+        display: block;
+      }
+      .delivery-status-widget {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-top: 50px;
+        line-height: 15px;
+        color: #000000;
+        border: 1px solid black;
+        border-radius: 6px;
+        padding: 15px 0px;
+      }
+
+      .t4s-table-res-df {
+        min-height: .01%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+      }
+      .comparision-table-container{
+        background-color: white;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 0px;
+      }
+      .comparision-table-container h3{
+        font-size: 26px;
+        margin-bottom: 0px;
+      }
+      .comparision-table-container p{
+        font-size: 20px;
+        margin-top: 10px;
+
+      }
+      .comparison-table {
+        width: auto;
+        max-width: 700px;
+        margin: 10px auto;
+        border-collapse: collapse;
+        border: 2px solid #000;
+      }
+      .main{
+        background-color: black;
+        color: white;
+        padding: 10px 60px;
+        font-size: 18px;
+      }
+      .feature-name{
+        font-size: 24px;
+        font-family: sans-serif;
+        border: 1px solid gray;
+        padding: 10px 30px;
+        text-align: center;
+      }
+      .check,.cross{
+        font-size: 24px;
+      }
+      /* =========================================
+        RESPONSIVE DESIGN (TABLET & MOBILE) 
+        ========================================= */
+      
+      /* Tablet & Mobile Devices */
+      @media (max-width: 820px) {
+        .prodetails {
+          display: flex;
+          flex-direction: column; /* Stack vertically */
+          width: 100%; /* Prevent it from touching edges */
+        }
+
+        .single-pro-image {
+          width: 100%;
+          margin-right: 0px; /* CLEAR the desktop margin */
+          margin-bottom: 30px;
+          
+          /* NEW: Force content to center */
+          display: flex;
+          flex-direction: column;
+          align-items: center; 
+        }
+
+        .main-img {
+          width: 100%;
+          max-width: 500px; /* Prevent it from getting too huge on tablets */
+          object-fit: contain; /* Ensures the whole watch is visible */
+        }
+        
+        /* Center the Gallery Thumbnails too */
+        .small-img-group {
+          justify-content: center;
+        }
+
+        .single-pro-details {
+          width: 100%;
+        }
+        .button-container{
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
+        .add-cart-btn { 
+         width: 44%;
+        }
+        .buy-now-btn {
+          width: 47%;
+        }
+        .comparision-table-container{
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        .comparision-table-container h3{
+          font-size: 18px;
+          margin-bottom: 0px;
+        }
+        .comparision-table-container p{
+          font-size: 18px;
+          margin-top: 10px;
+        }
+        .comparison-table {
+          border: 1px solid #000;
+        }
+        .main{
+          padding: 10px 20px;
+          font-size: 15px;
+        }
+        .feature-name{
+          font-size: 16px;
+        }
+        .check,.cross{
+          font-size: 16px;
+        }
+      }
+
+      /* Extra Small Mobile Devices */
+      @media (max-width: 480px) {
+        .prodetails {
+          padding: 20px;
+          width: 100%;
+        }
+        
+        .pro-name { font-size: 22px; }
+        .pro-price { font-size: 20px; }
+
+        .add-cart-btn, .buy-now-btn {
+          width: 100%;
+          display: block; 
+          text-align: center;
+        }
+
+        .small-img-col {
+          flex-basis: 15%; 
+        }
+        .comparision-table-container{
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        .comparision-table-container h3{
+          font-size: 18px;
+          margin-bottom: 0px;
+        }
+        .comparision-table-container p{
+          font-size: 18px;
+          margin-top: 10px;
+        }
+        .comparison-table {
+          border: 1px solid #000;
+        }
+        .main{
+          padding: 10px 20px;
+          font-size: 15px;
+        }
+        .feature-name{
+          font-size: 16px;
+        }
+        .check,.cross{
+          font-size: 16px;
+        }
+    }
   </style>
 </head>
+
 <body>
   <header class="header">
     <div class="logo-container">
@@ -82,7 +416,10 @@
 
   <section class="prodetails">
     <div class="single-pro-image">
-        <img src="" width="400px" class="main-img" alt="Product Image">
+        <img src="" width="100%" class="main-img" id="MainImg" alt="Product Image">
+        
+        <div class="small-img-group" id="gallery-container">
+          </div>
     </div>
     
     <div class="single-pro-details">
@@ -90,19 +427,81 @@
       
       <h4 class="pro-name">Loading...</h4>
       <h2 class="pro-price">Loading...</h2>
-      
-      <select class="quantity-input" value="1">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-      <button class="add-cart-btn">Add To Cart</button>
+      <div class="properties">
+        <p>🚚 Free Delivery Across Pakistan</p>
+
+        <p>🎁 Free RAVYN STORE Premium Packing</p>
+
+        <p>✅ 100% Authentic Guaranteed!</p>
+      </div>
+      <div class="button-container">
+        <div class="quantity-container">
+          <button class="qty-btn" id="qty-minus"><i class="fa-solid fa-minus"></i></button>
+          <input type="text" class="quantity-input" id="qty-input" value="1" readonly>
+          <button class="qty-btn" id="qty-plus"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <button class="add-cart-btn">Add To Cart</button>
+      </div>
       <button class="buy-now-btn buy-btn">Buy Now</button>
       
       <h4>Product Details</h4>
       <span class="pro-desc">Loading...</span>
+      <div class="delivery-status-widget">
+        <div class="status">
+            <i class="fas fa-shopping-bag status-icon" style="color: #121212;"></i>
+            <div class="status-text">Ordered</div>
+            <div class="status-date" id="order-date">Feb 7</div>
+        </div>
+        <div class="status">
+            <i class="fas fa-angle-double-right"></i>
+        </div>
+        <div class="status">
+            <i class="fas fa-solid fa-plane status-icon" style="color: #121212;"></i>
+            <div class="status-text">Shipped</div>
+            <div class="status-date" id="ship-date">Feb 8</div>
+        </div>
+        <div class="status">
+            <i class="fas fa-angle-double-right"></i>
+        </div>
+        <div class="status">
+            <i class="fas fa-box-open status-icon" style="color: #121212;"></i>
+            <div class="status-text">Delivered</div>
+            <div class="status-date" id="delivery-date">Feb 11</div>
+        </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="comparision-table-container">
+    <h3>Why People Choose RAVYN Store Watches</h3>
+    <p>RAVYN Store VS Others</p>
+    <div class="t4s-table-res-df">
+      <table class="comparison-table">
+        <thead class="table-top">
+          <tr>
+            <th class="main">Feature</th>
+            <th class="main">RAVYN Store</th>
+            <th class="main">Others</th>
+          </tr>
+        </thead>
+        <tbody class="table-bottom">
+          <tr>
+            <td class="feature-name">High quality</td>
+            <td class="feature-name"><span class="check">✓</span></td>
+            <td class="feature-name"><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Scratch resistant</td>
+            <td class="feature-name"><span class="check">✓</span></td>
+            <td class="feature-name"><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td class="feature-name">Luxury design</td>
+            <td class="feature-name"><span class="check">✓</span></td>
+            <td class="feature-name"><span class="cross">✗</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -125,139 +524,177 @@
       </div>
     </div>
   </footer>
+
   <script src="./Script/data.js"></script>
+
   <script>
     const bar = document.getElementById('bar');
     const nav = document.querySelector('.header-right-section');
     const close = document.getElementById('close');
+
     if (bar) {
       bar.addEventListener('click', () => nav.classList.add('active'));
     }
     if (close) {
       close.addEventListener('click', () => nav.classList.remove('active'));
     }
-    
+
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
-
     const product = products.find(p => p.id === productId);
+
     if (product) {
-      // querySelector finds the first element with this class
-      document.querySelector('.main-img').src = product.image;
+      const mainImg = document.getElementById('MainImg');
+      
+      mainImg.src = product.image; 
       document.querySelector('.pro-name').innerText = product.name;
       document.querySelector('.pro-price').innerText = "Rs " + product.price + "/-";
-      document.querySelector('.pro-desc').innerText = product.des;
+      document.querySelector('.pro-desc').innerText = product.description || product.des || "No description available.";
 
+      // --- B. Render Gallery Images ---
+      const galleryContainer = document.getElementById('gallery-container');
+      
+      if (product.images && product.images.length > 0) {
+          let galleryHTML = '';
+          product.images.slice(0, 8).forEach((imgSrc) => {
+              galleryHTML += `
+                  <div class="small-img-col">
+                      <img src="${imgSrc}" onclick="changeMainImage('${imgSrc}')" alt="Variation">
+                  </div>
+              `;
+          });
+          galleryContainer.innerHTML = galleryHTML;
+      }
 
-      // --- WhatsApp Logic ---
-      const buyButton = document.querySelector('.buy-btn');
-      const quantityInput = document.querySelector('.quantity-input');
+      // --- C. Quantity Button Logic (FIXED) ---
+      // We select the elements here, inside the success block
+      const qtyInput = document.getElementById('qty-input');
+      const plusBtn = document.getElementById('qty-plus');
+      const minusBtn = document.getElementById('qty-minus');
 
-      buyButton.addEventListener('click', () => {
-          // Get the current quantity
-          const quantity = quantityInput.value;
-          const total = product.price * quantity;
+      // Add Click Event for Plus
+      if(plusBtn){
+        plusBtn.addEventListener('click', () => {
+            let currentValue = parseInt(qtyInput.value);
+            // Check if value is NaN (not a number), set to 0 if so
+            if (isNaN(currentValue)) currentValue = 0; 
+            qtyInput.value = currentValue + 1;
+        });
+      }
 
-          // YOUR PHONE NUMBER (No spaces, include country code)
-          const phoneNumber = "923107715463"; 
+      // Add Click Event for Minus
+      if(minusBtn){
+        minusBtn.addEventListener('click', () => {
+            let currentValue = parseInt(qtyInput.value);
+            if (isNaN(currentValue)) currentValue = 1;
+            if (currentValue > 1) {
+                qtyInput.value = currentValue - 1;
+            }
+        });
+      }
 
-          // Create the message
-          const message = `Hello, I want to order:
-Name: ${product.name}
-Price: Rs ${product.price}
-Quantity: ${quantity}
-Total: Rs ${total}
---------------------
-Is it available?`;
-
-          // Open WhatsApp
-          const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-          window.open(url, '_blank');
-      });
-    } else {
-      document.querySelector('.single-pro-details').innerHTML = "<h2>Product Not Found</h2>";
-    }
-    if (product) {
-      // ... (Keep your existing image, name, price, desc code)
-
-      const quantityInput = document.querySelector('.quantity-input');
+      // --- D. Cart & Buy Logic ---
       const addCartBtn = document.querySelector('.add-cart-btn');
       const buyNowBtn = document.querySelector('.buy-now-btn');
 
       updateCartCount();
 
-      // --- ADD TO CART LOGIC ---
+      // Add to Cart Event
       addCartBtn.addEventListener('click', () => {
         let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-        const quantity = parseInt(quantityInput.value);
+        // Ensure we read the value from the new input field
+        const quantity = parseInt(qtyInput.value); 
 
-        // Check if product already exists in cart
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
-            existingItem.quantity += quantity;
+          existingItem.quantity += quantity;
         } else {
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                quantity: quantity
-            });
+          cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: quantity
+          });
         }
 
         localStorage.setItem('ravyn_cart', JSON.stringify(cart));
-
         updateCartCount();
 
-        // --- NEW FEEDBACK LOGIC ---
-        // 1. Save original styles and text
+        // Visual Feedback
         const originalText = addCartBtn.innerText;
-        const originalBg = addCartBtn.style.backgroundColor;
-        const originalColor = addCartBtn.style.color;
-        const originalBorder = addCartBtn.style.border;
-
-        // 2. Apply "Added" styles
-        addCartBtn.innerText = "Added to cart";
-        addCartBtn.style.backgroundColor = "white";
-        addCartBtn.style.border = "2px solid #088178";
+        addCartBtn.innerText = "Added!";
+        addCartBtn.style.backgroundColor = "#fff";
         addCartBtn.style.color = "#088178";
-        addCartBtn.style.fontSize = '16px';
+        addCartBtn.style.border = "1px solid #088178";
 
-        // 3. Revert after 1 second (1000 milliseconds)
         setTimeout(() => {
-            addCartBtn.innerText = originalText;
-            addCartBtn.style.backgroundColor = originalBg;
-            addCartBtn.style.color = originalColor;
-            addCartBtn.style.border = originalBorder;
-            addCartBtn.style.fontSize = '16px';
-            // Optional: Redirect to cart after the visual effect finishes
-            // window.location.href = 'cart.html'; 
-    }, 1000);
-  });
-  function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-    // Sum up the quantity of all items
-    const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-    
-    // Find the span inside the cart button and update it
-    const countElement = document.querySelector('.cart-button span');
-    if (countElement) {
-        countElement.innerText = totalCount;
-    }
-  }
-
-      // --- BUY NOW LOGIC (Direct to WhatsApp) ---
-      buyNowBtn.addEventListener('click', () => {
-        const quantity = quantityInput.value;
-        const total = product.price * quantity;
-        const phoneNumber = "923107715463"; 
-        const message = `Hello, I want to Buy Now:\nName: ${product.name}\nPrice: Rs ${product.price}\nQuantity: ${quantity}\nTotal: Rs ${total}\n--------------------\nIs it available?`;
-        
-        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
+          addCartBtn.innerText = originalText;
+          addCartBtn.style.backgroundColor = "black";
+          addCartBtn.style.color = "white";
+          addCartBtn.style.border = "none";
+        }, 1000);
       });
+
+      // Buy Now (WhatsApp) Event
+      buyNowBtn.addEventListener('click', () => {
+      const quantity = qtyInput.value;
+      const total = product.price * quantity;
+      const phoneNumber = "923107715463"; 
+      
+      const message = `Hello, I want to Buy Now:\nName: ${product.name}\nPrice: Rs ${product.price}\nQuantity: ${quantity}\nTotal: Rs ${total}\n--------------------\nIs it available?`;
+      
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    });
+
+    updateShippingDates();
+
+    } else {
+      document.querySelector('.single-pro-details').innerHTML = "<h2>Product Not Found</h2><p>Please go back to <a href='index.html'>Home</a>.</p>";
+      document.querySelector('.single-pro-image').style.display = 'none';
     }
 
+    // --- Helper Functions ---
+    
+    function changeMainImage(src) {
+      document.getElementById('MainImg').src = src;
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+      const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      const countElement = document.querySelector('.cart-button span');
+      
+      if (countElement) {
+        countElement.innerText = totalCount;
+        countElement.style.display = totalCount > 0 ? 'flex' : 'none'; 
+      }
+    }
+
+    function updateShippingDates() {
+      const now = new Date();
+      function formatDate(date) {
+        const options = { month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+      }
+
+      const orderedDate = new Date(now);
+      const shippedDate = new Date(now);
+      shippedDate.setDate(orderedDate.getDate() + 1); 
+      const deliveredDate = new Date(now);
+      deliveredDate.setDate(orderedDate.getDate() + 4); 
+
+      const orderedEl = document.getElementById('date-ordered');
+      const shippedEl = document.getElementById('date-shipped');
+      const deliveredEl = document.getElementById('date-delivered');
+
+      if (orderedEl) orderedEl.innerText = formatDate(orderedDate);
+      if (shippedEl) shippedEl.innerText = formatDate(shippedDate);
+      if (deliveredEl) deliveredEl.innerText = formatDate(deliveredDate);
+    }
+    
+    updateCartCount(); 
   </script>
 </body>
 </html>

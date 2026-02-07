@@ -7,9 +7,6 @@
   background-color: rgb(195, 195, 195);
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
-  position: fixed;
-  top: 0;
-  left: 0;
   box-sizing: border-box;
   padding: 0 50px;
   z-index: 999;
@@ -29,8 +26,7 @@
   font-size: 35px;
   margin-left:10px;
   position: relative;
-  top: 0;
-  left: 0;
+  bottom: 0;
 }
 .cart-button span{
   font-size: 7px;

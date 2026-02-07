@@ -20,7 +20,7 @@ i{
   justify-content: space-between;
   align-items: center;
   height: 80vh;
-  margin: 100px 50px;
+  margin: 20px 30px;
   border-radius: 10px;
   box-shadow: 10px 10px 60px black;
   /*box-shadow: 5px 5px 15px rgba(0,0,0,0.3);*/
@@ -57,23 +57,62 @@ i{
 .fe-products {
   scroll-margin-top: 80px; /* Adjust this value to match your header height */
 }
+.product-deal{
+  width: 100%;
+  text-align: center;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  padding: 20px 0px;
+  letter-spacing: 5px; 
+}
+.heading-container{
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .product-heading{
   text-align: center;
-  box-shadow: 5px 5px 10px gray;
-  padding: 20px 0px;
+  padding: 10px 0px;
   font-size: 44px;
-  font-family: Arial, Helvetica, sans-serif;
-  margin-top: 40px;
-  border-radius: 50px;
-  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: inline-block;
+  position: relative;
+}
+
+.product-heading::after{
+  content: '';
+  display: block;
+  background-color: black;
+  height: 5px;
+  position: absolute;
+  top: 50%;
+  left: -50%;
+  right: 105%;
+}
+.product-heading::before{
+  content: '';
+  display: block;
+  background-color: black;
+  height: 5px;
+  position: absolute;
+  top: 50%;
+  right: -50%;
+  left: 105%;
 }
 .products-grid{
   display: grid;
   align-content: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   padding: 40px 60px;
   column-gap: 20px;
-  row-gap: 60px;
+  row-gap: 30px;
+}
+.dis-container-display{
+  display: none;
 }
 .products{
   display: flex;
@@ -112,9 +151,7 @@ i{
   left: 0;
   border-top-left-radius: 10px;
 }
-.dis-container-display{
-  display: none;
-}
+
 .product-bottom{
   margin: 0px 20px;
   font-family: arial;
@@ -175,6 +212,31 @@ i{
   font-size: 16px;
 }
 
+.button-container{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0px;
+}
+.see-button{
+  padding: 10px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 50px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  box-shadow: 10px 10px 50px black;
+  transition: box-shadow .2s linear;
+}
+.see-button:hover{
+  box-shadow: 7px 7px 20px black;
+}
+
+
+
 
 /* Wrapper */
 .carousel-wrapper {
@@ -215,7 +277,7 @@ i{
   justify-content: center;
   opacity: 0.5;
   transform: scale(0.8);
-  transition: all 0.1s linear; /* Smooth scaling */
+  transition: all 0.3s linear; /* Smooth scaling */
   flex-shrink: 0; /* Prevent squishing */
   transform-origin: center center;
 }
