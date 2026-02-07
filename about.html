@@ -104,35 +104,36 @@
     </div>
   </section>
 
-    <footer class="footer">
-      <div class="footer-left-section">
-          <h1>RAVYN</h1>
-          <p class="footer-text">RAVYN Watches brings premium timepieces crafted for elegance, precision, and everyday style.</p>
+  <footer class="footer">
+    <div class="footer-left-section">
+        <h1>RAVYN</h1>
+        <p class="footer-text">RAVYN Watches brings premium timepieces crafted for elegance, precision, and everyday style.</p>
+    </div>
+    <div class="footer-right-section">
+      <h2>Social</h2>
+      <div class="social-link">
+        <p><strong>Address: <br></strong> Sargodha , Pakistan</p>
+        <p><strong>Phone: <br></strong> +92-399-99999</p>
+        <p><strong>Email: <br></strong> info@support.com</p>
       </div>
-      <div class="footer-right-section">
-        <h2>Social</h2>
-        <div class="social-link">
-          <p><strong>Address: <br></strong> Sargodha , Pakistan</p>
-          <p><strong>Phone: <br></strong> +92-399-99999</p>
-          <p><strong>Email: <br></strong> info@support.com</p>
-        </div>
-        <div class="social-icon">
-          <i class="fa-brands fa-tiktok"></i>
-          <i class="fa-brands fa-instagram"></i>
-          <i class="fa-brands fa-facebook"></i>
-        </div>
+      <div class="social-icon">
+        <i class="fa-brands fa-tiktok"></i>
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
       </div>
-    </footer>
-    <script>
-      const bar = document.getElementById('bar');
-      const nav = document.querySelector('.header-right-section');
-      const close = document.getElementById('close');
-      if (bar) {
-        bar.addEventListener('click', () => nav.classList.add('active'));
-      }
-      if (close) {
-        close.addEventListener('click', () => nav.classList.remove('active'));
-      }
-    </script>
+    </div>
+  </footer>
+  
+  <script>
+    const bar = document.getElementById('bar');
+    const nav = document.querySelector('.header-right-section');
+    const close = document.getElementById('close');
+    if (bar) {
+      bar.addEventListener('click', () => nav.classList.add('active'));
+    }
+    if (close) {
+      close.addEventListener('click', () => nav.classList.remove('active'));
+    }
+  </script>
 </body>
 </html>

@@ -19,8 +19,7 @@
   }
   
 }
-@media (max-width: 799px) 
-{
+@media (max-width: 799px) {
   .header-right{
     left: 0;
     right: 0;
@@ -394,6 +393,11 @@
     font-size: 8px;
     margin: 10px 7px;
     padding:8px 14px;
+  }
+  .product-deal{
+    letter-spacing: 2px;
+    font-size: 12px;
+    padding: 10px 0px; 
   }
   /*carousel-wrapper*/
   .carousel-wrapper{
