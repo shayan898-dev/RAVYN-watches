@@ -78,7 +78,7 @@
 
     /* Price Section */
     .price-col { text-align: center; display: inline; }
-    .old-price { text-decoration: line-through; color: #999; font-size: 14px; margin-right: 8px; display: inline; }
+    .old-price { text-decoration: line-through; color: #999; font-size: 13px; margin-right: 8px; display: inline; }
     .current-price { color: #ff4444; font-weight: 600; font-size: 16px; display: inline; }
 
     /* Quantity Section */
@@ -112,58 +112,21 @@
     .empty-cart-msg a { text-decoration: underline; color: #000; }
 
     /* --- RESPONSIVE MEDIA QUERIES --- */
-    /*
-    @media (max-width: 900px) {
-      .cart-table-header { display: none; }
-
-      .cart-item {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        position: relative;
-      }
-      .subtotal-area{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;  
-        color: black;
-      }
-      .checkout-btn {
-      width: 100%;
-      }
-      .product-info { width: 100%; border-bottom: 1px solid black; padding-bottom: 15px; }
-      
-      .item-bottom-row {
-        display: grid; grid-template-columns: 1fr 1fr 1fr;
-      }
-      
-      .price-col { width: 100px;display: inline;}
-      .quantity-col {width: 100px; display: inline; }
-      .total-col { width: 100px;display: inline; }
-    }
-    */
     @media (max-width: 500px) {
-      .cart-header-banner{
-        margin-top: 50px;
-      }
+      .cart-header-banner{ margin-top: 50px; }
       .cart-header-banner h2 { font-size: 20px; }
       
       .product-info { flex-direction: row; gap: 15px; }
       .product-img { width: 80px; height: 80px; }
       .product-name { font-size: 14px; }
-      .checkout-btn {
-        width: 100%;
-      }
+      .checkout-btn { width: 100%; }
       .cart-item { display: block; }
       .price-col, .quantity-col, .total-col {
         display: flex; justify-content: space-between; align-items: center;
         margin-top: 15px; 
         width: 100%;
       }
-      #tableHeader{
-        display: none;
-      }
+      #tableHeader{ display: none; }
       
       .price-col::before { content: "Price:"; font-weight: 600; color: black; }
       .quantity-col::before { content: "Qty:"; font-weight: 600; color: black; }
@@ -182,8 +145,7 @@
     <div class="header-right-section">
         <a href="index.html"><p class="menu">Home</p></a>
         <a href="about.html"><p class="menu">About</p></a>
-        <p class="menu">Contact</p>
-        <a href="cart.html"><i class="fa-solid fa-bag-shopping cart-button"><span>0</span></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping cart-button"><span>0</span></i></a>
         <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
     </div>
     <div class="mobile">
@@ -204,8 +166,7 @@
       <div class="header-col right">Total</div>
     </div>
 
-    <div id="cartItemsWrapper">
-      </div>
+    <div id="cartItemsWrapper"></div>
 
     <div class="empty-cart-msg" id="emptyCartMsg">
       <p>Your cart is empty. <a href="index.html">Start Shopping</a></p>
@@ -221,6 +182,8 @@
 
   </section>
 
+  <script src="./Script/data.js"></script>
+
   <script>
     let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
 
@@ -230,7 +193,6 @@
       const footer = document.getElementById('cartFooter');
       const emptyMsg = document.getElementById('emptyCartMsg');
       
-      // Attempts to find the cart badge in your pasted header
       const countBadge = document.querySelector('.cart-button span');
 
       wrapper.innerHTML = ''; 
@@ -252,31 +214,48 @@
       emptyMsg.style.display = 'none';
       if(countBadge) countBadge.style.display = 'flex';
 
-      cart.forEach((product, index) => {
-        const lineTotal = product.price * product.quantity;
+      cart.forEach((cartItem, index) => {
+        // --- 1. FIND REAL DATA FROM DATABASE ---
+        // We use the ID to look up the original price in data.js
+        const dbProduct = typeof products !== 'undefined' ? products.find(p => p.id === cartItem.id) : null;
+        
+        // --- 2. DETERMINE PRICES ---
+        // Price paid (stored in cart)
+        const currentPrice = cartItem.price; 
+        
+        // Original Price (from DB). If DB not found, fallback to current price
+        const originalPrice = dbProduct ? dbProduct.price : currentPrice;
+        
+        // Check if there is actually a discount
+        const hasDiscount = dbProduct && (dbProduct.dis > 0) && (originalPrice > currentPrice);
+
+        // Calculate Totals
+        const lineTotal = currentPrice * cartItem.quantity;
         subtotal += lineTotal;
-        totalItems += product.quantity;
-        const oldPrice = Math.floor(product.price * 1.3); 
+        totalItems += cartItem.quantity;
+
+        // Generate Price HTML (Only show Old Price if discount exists)
+        const priceDisplay = hasDiscount 
+            ? `<span class="old-price">Rs.${originalPrice}</span> <span class="current-price">Rs.${currentPrice}</span>`
+            : `<span class="current-price">Rs.${currentPrice}</span>`;
 
         const html = `
           <div class="cart-item">
             <div class="product-info">
-              <img src="${product.image}" alt="${product.name}" class="product-img">
+              <img src="${cartItem.image}" alt="${cartItem.name}" class="product-img">
               <div class="product-details">
-                <p class="product-name">${product.name}</p>
+                <p class="product-name">${cartItem.name}</p>
                 <i class="fa-regular fa-trash-can remove-btn" onclick="removeItem(${index})"></i>
               </div>
             </div>
 
             <div class="item-bottom-row" style="display: contents;"> 
               <div class="price-col">
-                <span class="old-price">Rs.${oldPrice}</span>
-                <span class="current-price">Rs.${product.price}</span>
-              </div>
+                ${priceDisplay} </div>
               <div class="quantity-col">
                 <div class="quantity-selector">
                   <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
-                  <input type="number" class="qty-input" value="${product.quantity}" readonly>
+                  <input type="number" class="qty-input" value="${cartItem.quantity}" readonly>
                   <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
                 </div>
               </div>
@@ -291,7 +270,6 @@
 
       document.getElementById('subtotalDisplay').innerText = `Rs ${subtotal.toLocaleString()}.00`;
       
-      // Update the header badge if it exists
       if(countBadge) countBadge.innerText = totalItems;
     }
 
@@ -312,7 +290,15 @@
       renderCart();
     }
 
+    // Initialize
     renderCart();
+
+    // Header logic
+    const bar = document.getElementById('bar');
+    const nav = document.querySelector('.header-right-section');
+    const close = document.getElementById('close');
+    if (bar) bar.addEventListener('click', () => nav.classList.add('active'));
+    if (close) close.addEventListener('click', () => nav.classList.remove('active'));
 
     window.addEventListener('resize', () => {
       const tableHeader = document.getElementById('tableHeader');

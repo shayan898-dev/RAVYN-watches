@@ -10,9 +10,10 @@ if (close) {
 }
 
 // Function to filter and generate HTML
+// Function to filter and generate HTML
 function renderProducts(category, limit, containerSelector) {
   const container = document.querySelector(containerSelector);
-  if (!container) return; // Exit if the section doesn't exist on this page
+  if (!container) return; 
 
   // 1. Filter the products
   let filteredList = products;
@@ -20,7 +21,7 @@ function renderProducts(category, limit, containerSelector) {
     filteredList = products.filter(p => p.category === category);
   }
 
-  // 2. Limit the number of products (e.g., show only 8)
+  // 2. Limit the number of products
   if (limit) {
     filteredList = filteredList.slice(0, limit);
   }
@@ -28,6 +29,27 @@ function renderProducts(category, limit, containerSelector) {
   // 3. Generate the HTML
   let html = '';
   filteredList.forEach(product => {
+    
+    // --- NEW LOGIC: Calculate Discount ---
+    const hasDiscount = product.dis > 0;
+    // Calculate final price: Original - (Original * (Discount / 100))
+    const finalPrice = hasDiscount 
+        ? Math.floor(product.price - (product.price * (product.dis / 100))) 
+        : product.price;
+
+    // Create the HTML for the price section
+    // If discount exists: Show crossed-out original + New Price
+    // If no discount: Just show original price
+    const priceDisplay = hasDiscount 
+        ? `
+           <div class="price-stack">
+             <p class="discount-price">Rs ${product.price}</p>
+             <h4 class="product-price">Rs ${finalPrice}/-</h4>
+           </div>
+          `
+        : `<h4 class="product-price">Rs ${product.price}/-</h4>`;
+    // -------------------------------------
+
     html += `
       <div class="products js-product" onclick="window.location.href='Product-detail.html?id=${product.id}'">
         <div class="products-top">
@@ -39,7 +61,10 @@ function renderProducts(category, limit, containerSelector) {
         <div class="product-bottom">
           <p class="product-owner">RAVYN Watch</p>
           <div class="product-name-container"><h2 class="product-name">${product.name}</h2></div>
-          <h4 class="product-price">Rs ${product.price}/-</h4>
+          
+          <div class="parice-button-container"> 
+            ${priceDisplay} <i class="fa-solid fa-cart-shopping"></i>
+          </div>
         </div>
       </div>
     `;

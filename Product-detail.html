@@ -45,7 +45,7 @@
       }
 
       .main-img {
-        width: 280px;
+        width: 100%;
         border-radius: 10px;
         margin-bottom: 10px;
         object-fit: cover;
@@ -62,7 +62,7 @@
       }
 
       .small-img-col {
-        flex-basis: 20%; /* Fits ~4 images per row */
+        flex-basis: 15%; /* Fits ~4 images per row */
         cursor: pointer;
       }
 
@@ -103,6 +103,30 @@
         font-weight: bold;
         color: #088178; /* Theme color */
         margin-bottom: 20px;
+      }
+      /* --- Add these to your existing CSS --- */
+      .old-price {
+          text-decoration: line-through;
+          color: gray;
+          font-size: 0.7em; /* Makes it smaller than the main price */
+          margin-right: 15px;
+          font-weight: normal;
+      }
+
+      .new-price {
+          color: red; /* Highlights the discounted price */
+      }
+
+      .discount-badge {
+          font-size: 0.5em;
+          background-color: black;
+          color: white;
+          padding: 4px 10px;
+          border-radius: 5px;
+          vertical-align: middle;
+          margin-left: 10px;
+          font-weight: normal;
+          letter-spacing: 1px;
       }
       .button-container{
         display: flex;
@@ -406,8 +430,7 @@
     <div class="header-right-section">
         <a href="index.html"><p class="menu">Home</p></a>
         <a href="about.html"><p class="menu">About</p></a>
-        <p class="menu">Contact</p>
-        <a href="cart.html"><i class="fa-solid fa-bag-shopping cart-button"><span>0</span></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping cart-button"><span>0</span></i></a>
         <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
     </div>
     <div class="mobile">
@@ -529,6 +552,7 @@
   <script src="./Script/data.js"></script>
 
   <script>
+    // --- Mobile Menu Logic ---
     const bar = document.getElementById('bar');
     const nav = document.querySelector('.header-right-section');
     const close = document.getElementById('close');
@@ -540,6 +564,7 @@
       close.addEventListener('click', () => nav.classList.remove('active'));
     }
 
+    // --- Product Loading Logic ---
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
     const product = products.find(p => p.id === productId);
@@ -549,12 +574,28 @@
       
       mainImg.src = product.image; 
       document.querySelector('.pro-name').innerText = product.name;
-      document.querySelector('.pro-price').innerText = "Rs " + product.price + "/-";
       document.querySelector('.pro-desc').innerText = product.description || product.des || "No description available.";
+
+      // --- 1. NEW PRICE CALCULATION LOGIC ---
+      let finalPrice = product.price; // Default to normal price
+      
+      // If there is a discount, calculate the new price
+      if (product.dis > 0) {
+          finalPrice = Math.floor(product.price - (product.price * (product.dis / 100)));
+          
+          // Inject HTML for Stacked Prices (Old crossed out + New Red)
+          document.querySelector('.pro-price').innerHTML = `
+            <span class="old-price">Rs ${product.price}</span>
+            <span class="new-price">Rs ${finalPrice}/-</span>
+            <span class="discount-badge">-${product.dis}%</span>
+          `;
+      } else {
+          // No discount, just show normal price
+          document.querySelector('.pro-price').innerText = "Rs " + product.price + "/-";
+      }
 
       // --- B. Render Gallery Images ---
       const galleryContainer = document.getElementById('gallery-container');
-      
       if (product.images && product.images.length > 0) {
           let galleryHTML = '';
           product.images.slice(0, 8).forEach((imgSrc) => {
@@ -567,30 +608,22 @@
           galleryContainer.innerHTML = galleryHTML;
       }
 
-      // --- C. Quantity Button Logic (FIXED) ---
-      // We select the elements here, inside the success block
+      // --- C. Quantity Button Logic ---
       const qtyInput = document.getElementById('qty-input');
       const plusBtn = document.getElementById('qty-plus');
       const minusBtn = document.getElementById('qty-minus');
 
-      // Add Click Event for Plus
       if(plusBtn){
         plusBtn.addEventListener('click', () => {
-            let currentValue = parseInt(qtyInput.value);
-            // Check if value is NaN (not a number), set to 0 if so
-            if (isNaN(currentValue)) currentValue = 0; 
-            qtyInput.value = currentValue + 1;
+            let val = parseInt(qtyInput.value) || 0;
+            qtyInput.value = val + 1;
         });
       }
 
-      // Add Click Event for Minus
       if(minusBtn){
         minusBtn.addEventListener('click', () => {
-            let currentValue = parseInt(qtyInput.value);
-            if (isNaN(currentValue)) currentValue = 1;
-            if (currentValue > 1) {
-                qtyInput.value = currentValue - 1;
-            }
+            let val = parseInt(qtyInput.value) || 1;
+            if (val > 1) qtyInput.value = val - 1;
         });
       }
 
@@ -598,12 +631,9 @@
       const addCartBtn = document.querySelector('.add-cart-btn');
       const buyNowBtn = document.querySelector('.buy-now-btn');
 
-      updateCartCount();
-
-      // Add to Cart Event
+      // Add to Cart
       addCartBtn.addEventListener('click', () => {
         let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-        // Ensure we read the value from the new input field
         const quantity = parseInt(qtyInput.value); 
 
         const existingItem = cart.find(item => item.id === product.id);
@@ -613,7 +643,7 @@
           cart.push({
             id: product.id,
             name: product.name,
-            price: product.price,
+            price: finalPrice, // Save the DISCOUNTED price to cart
             image: product.image,
             quantity: quantity
           });
@@ -622,42 +652,38 @@
         localStorage.setItem('ravyn_cart', JSON.stringify(cart));
         updateCartCount();
 
-        // Visual Feedback
+        // Button Feedback
         const originalText = addCartBtn.innerText;
         addCartBtn.innerText = "Added!";
         addCartBtn.style.backgroundColor = "#fff";
         addCartBtn.style.color = "#088178";
-        addCartBtn.style.border = "1px solid #088178";
-
         setTimeout(() => {
           addCartBtn.innerText = originalText;
           addCartBtn.style.backgroundColor = "black";
           addCartBtn.style.color = "white";
-          addCartBtn.style.border = "none";
         }, 1000);
       });
 
-      // Buy Now (WhatsApp) Event
+      // Buy Now (WhatsApp) - UPDATED with Discount Math
       buyNowBtn.addEventListener('click', () => {
-      const quantity = qtyInput.value;
-      const total = product.price * quantity;
-      const phoneNumber = "923107715463"; 
-      
-      const message = `Hello, I want to Buy Now:\nName: ${product.name}\nPrice: Rs ${product.price}\nQuantity: ${quantity}\nTotal: Rs ${total}\n--------------------\nIs it available?`;
-      
-      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
-    });
+        const quantity = parseInt(qtyInput.value);
+        const total = finalPrice * quantity; // Uses the discounted price!
+        const phoneNumber = "923107715463"; 
+        
+        const message = `Hello, I want to Buy Now:\nName: ${product.name}\nOriginal Price: Rs ${product.price}\nDiscounted Price: Rs ${finalPrice}\nQuantity: ${quantity}\nTotal Bill: Rs ${total}\n--------------------\nIs it available?`;
+        
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+      });
 
-    updateShippingDates();
+      updateShippingDates();
 
     } else {
-      document.querySelector('.single-pro-details').innerHTML = "<h2>Product Not Found</h2><p>Please go back to <a href='index.html'>Home</a>.</p>";
+      document.querySelector('.single-pro-details').innerHTML = "<h2>Product Not Found</h2><p><a href='index.html'>Go Home</a></p>";
       document.querySelector('.single-pro-image').style.display = 'none';
     }
 
     // --- Helper Functions ---
-    
     function changeMainImage(src) {
       document.getElementById('MainImg').src = src;
     }
@@ -666,7 +692,6 @@
       const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
       const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
       const countElement = document.querySelector('.cart-button span');
-      
       if (countElement) {
         countElement.innerText = totalCount;
         countElement.style.display = totalCount > 0 ? 'flex' : 'none'; 
@@ -676,19 +701,17 @@
     function updateShippingDates() {
       const now = new Date();
       function formatDate(date) {
-        const options = { month: 'short', day: 'numeric' };
-        return date.toLocaleDateString('en-US', options);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       }
 
       const orderedDate = new Date(now);
-      const shippedDate = new Date(now);
-      shippedDate.setDate(orderedDate.getDate() + 1); 
-      const deliveredDate = new Date(now);
-      deliveredDate.setDate(orderedDate.getDate() + 4); 
+      const shippedDate = new Date(now); shippedDate.setDate(orderedDate.getDate() + 1); 
+      const deliveredDate = new Date(now); deliveredDate.setDate(orderedDate.getDate() + 4); 
 
-      const orderedEl = document.getElementById('date-ordered');
-      const shippedEl = document.getElementById('date-shipped');
-      const deliveredEl = document.getElementById('date-delivered');
+      // FIXED: IDs now match your HTML (order-date, ship-date, delivery-date)
+      const orderedEl = document.getElementById('order-date');
+      const shippedEl = document.getElementById('ship-date');
+      const deliveredEl = document.getElementById('delivery-date');
 
       if (orderedEl) orderedEl.innerText = formatDate(orderedDate);
       if (shippedEl) shippedEl.innerText = formatDate(shippedDate);
