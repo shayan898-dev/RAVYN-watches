@@ -34,10 +34,11 @@
     right: -310px;
     height: 100vh;
     width: 300px;
-    background-color: rgb(232, 232, 232);
+    background-color: white;
     padding: 80px 0 0 10px;
     box-shadow: 0 40px 60px rgba(0,0,0,.1);
     transition: right .3s linear;
+    z-index: 1000;
   }
   .header-right-section.active{
     right: 0px;
@@ -414,29 +415,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .product-heading::after{
-    content: '';
-    display: block;
-    background-color: black;
-    height: 3px;
-    width: 60px;
-    position: absolute;
-    top: 50%;
-    margin-right: 70px;
-    left: 18%;  
-  }
-  .product-heading::before{
-    content: '';
-    display: block;
-    background-color: black;
-    height: 3px;
-    width: 60px;
-    position: absolute;
-    top: 50%;
-    margin-left: 65px;
-    left: 50%;
   }
   .products-grid{ 
     grid-template-columns: 1fr 1fr;

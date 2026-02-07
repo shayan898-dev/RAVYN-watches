@@ -40,9 +40,6 @@ function renderProducts(category, limit, containerSelector) {
           <p class="product-owner">RAVYN Watch</p>
           <div class="product-name-container"><h2 class="product-name">${product.name}</h2></div>
           <h4 class="product-price">Rs ${product.price}/-</h4>
-          <button class="js-buy-button" data-product-id="${product.id}">
-            <i class="fa-solid fa-bag-shopping"></i>
-          </button>
         </div>
       </div>
     `;
