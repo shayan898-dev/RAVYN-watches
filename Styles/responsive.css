@@ -245,6 +245,9 @@
     padding:8px 14px;
   }
 }
+.mobile-navbar {
+  display: none;
+}
 @media (max-width: 430px) {
   .header{
     height: 50px;
@@ -302,63 +305,58 @@
   .product-price{
     font-size: 18px;
   }
-  .footer{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 30px;
-    box-shadow: 10px 10px 50px rgb(37, 37, 37);
-    font-family: arial;
-    background-color: rgb(192, 192, 192);
-    bottom: 0;
+  /* Hide the big old footer */
+  .footer {
+    display: none !important;
   }
-  .footer-left-section{
+
+  /* Show and style the mobile navigation bar */
+  .mobile-navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background-color: #ffffff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 2000; /* Ensure it stays above other elements */
+    border-top: 1px solid #ddd;
+  }
+
+  .mobile-nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 130px;
-    margin-left: 20px;
-  }
-  .footer-left-section h1{
-    font-size: 30px;
-    margin-top: 90px;
-    font-family: 'Times New Roman', Times, serif;
-  }
-  .footer-left-section p{
-    width: 140px;
-    color: gray;
-  }
-  .footer-right-section h2{
-    font-size: 24px;
-  }
-  .footer-right-section{
-    margin-left: 30px;
-  }
-  .footer-right-section p{
-    font-size: 16px;
-    margin-left: 10px;
-    cursor:pointer;
-    margin-bottom: 0px;
-  }
-  .footer-right-section i{
-    margin-left: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: color .15s linear;
-    margin: 0px;
-  }
-  .footer-right-section i:hover{
-    color: gray;
-  }
-  .footer-right-section .social-icon{
-    margin: 20px 30px;
-  }
-  a{
-    color: black;
     text-decoration: none;
+    color: #333;
+    flex: 1;
   }
-  i{
-    border: none;
+
+  /* Font Awesome Icon Styling */
+  .mobile-nav-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  /* Label Styling */
+  .mobile-nav-item .label {
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    font-weight: 500;
+  }
+
+  /* Active/Hover state */
+  .mobile-nav-item:active, 
+  .mobile-nav-item:hover {
+    color: #666; /* Match your site's gray theme */
+  }
+
+  /* Add padding to the bottom of the body so the navbar doesn't cover content */
+  body {
+    padding-bottom: 70px;
   } 
 
 }
