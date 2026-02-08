@@ -640,3 +640,11 @@
     border: none;
   }
 }
+@media (max-width: 360px){
+  .products-grid{
+    column-gap: -5px;
+  }
+  .products{
+    width: 150px;
+  }
+}
