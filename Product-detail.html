@@ -664,13 +664,12 @@
       const addCartBtn = document.querySelector('.add-cart-btn');
       const buyNowBtn = document.querySelector('.buy-now-btn');
 
-      // Add to Cart
-      // --- Buy Now Logic (Add to Cart + Redirect) ---
-      buyNowBtn.addEventListener('click', () => {
+      // Helper function to add item to cart
+      function addToCart(redirect = false) {
         let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
         const quantity = parseInt(qtyInput.value);
 
-        // 1. Add item to cart first
+        // 1. Add item to cart
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
           existingItem.quantity += quantity;
@@ -688,19 +687,31 @@
         localStorage.setItem('ravyn_cart', JSON.stringify(cart));
         updateCartCount();
 
-        // 3. Redirect to Checkout Page
-        window.location.href = 'checkout.html';
+        // 3. Handle redirect or feedback
+        if (redirect) {
+            window.location.href = 'checkout.html';
+        } else {
+            // Visual Feedback for "Add to Cart"
+            const originalText = addCartBtn.innerText;
+            addCartBtn.innerText = "Added!";
+            addCartBtn.style.backgroundColor = "black";
+            addCartBtn.style.color = "white";
+            setTimeout(() => {
+                addCartBtn.innerText = originalText;
+                addCartBtn.style.backgroundColor = "#fff";
+                addCartBtn.style.color = "black";
+            }, 1000);
+        }
+      }
+
+      // EVENT LISTENER: Add to Cart Button
+      addCartBtn.addEventListener('click', () => {
+        addToCart(false); // False means do NOT redirect
       });
-      // Buy Now (WhatsApp) - UPDATED with Discount Math
+
+      // EVENT LISTENER: Buy Now Button
       buyNowBtn.addEventListener('click', () => {
-        const quantity = parseInt(qtyInput.value);
-        const total = finalPrice * quantity; // Uses the discounted price!
-        const phoneNumber = "923107715463"; 
-        
-        const message = `Hello, I want to Buy Now:\nName: ${product.name}\nOriginal Price: Rs ${product.price}\nDiscounted Price: Rs ${finalPrice}\nQuantity: ${quantity}\nTotal Bill: Rs ${total}\n--------------------\nIs it available?`;
-        
-        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
+        addToCart(true); // True means redirect to checkout
       });
 
       updateShippingDates();
@@ -735,7 +746,6 @@
       const shippedDate = new Date(now); shippedDate.setDate(orderedDate.getDate() + 1); 
       const deliveredDate = new Date(now); deliveredDate.setDate(orderedDate.getDate() + 4); 
 
-      // FIXED: IDs now match your HTML (order-date, ship-date, delivery-date)
       const orderedEl = document.getElementById('order-date');
       const shippedEl = document.getElementById('ship-date');
       const deliveredEl = document.getElementById('delivery-date');
@@ -768,11 +778,6 @@
     }
 
     // --- 2. Unified Search & Suggestion Helper Function ---
-    /**
-     * @param {string} inputId - The ID of the text input
-     * @param {string} btnId - The ID of the search button
-     * @param {string} suggestionsId - The ID of the dropdown suggestions container
-     */
     function setupSearch(inputId, btnId, suggestionsId) {
         const input = document.getElementById(inputId);
         const btn = document.getElementById(btnId);
