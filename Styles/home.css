@@ -37,6 +37,9 @@ i{
 .hero-left h2{
   font-size: 40px;
 }
+.hero-left h4{
+  color: gray;
+}
 .hero-left button{
   padding: 10px 20px;
   background-color: black;

@@ -436,7 +436,7 @@
         </div>
 
         <a href="index.html"><p class="menu">Home</p></a>
-        <a href="about.html"><p class="menu">About</p></a>
+        <a href="collection.html"><p class="menu">Collection</p></a>
         <a href="cart.html"><i class="fa-solid fa-cart-shopping cart-button"><span>0</span></i></a>
         <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
     </div>
@@ -570,28 +570,15 @@
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="label">Cart</span>
     </a>
-    <a href="contact.html" class="mobile-nav-item">
-      <i class="fa-solid fa-envelope"></i>
-      <span class="label">Contact</span>
+    
+    <a href="checkout.html" class="mobile-nav-item">
+      <i class="fa-solid fa-credit-card"></i> <span class="label">Checkout</span>
     </a>
     
     <div class="mobile-nav-item" id="mobileSearchTrigger">
       <i class="fa-solid fa-magnifying-glass"></i>
       <span class="label">Search</span>
     </div>
-  </div>
-  <div class="search-side-panel" id="sideSearchPanel">
-      <div class="panel-header">
-          <h2>Search</h2>
-          <i class="fa-solid fa-xmark" id="closeSideSearch"></i>
-      </div>
-      <div class="panel-body">
-          <div class="mobile-search-box">
-              <input type="text" id="sideSearchInput" placeholder="Search watches..." autocomplete="off">
-              <button id="sideSearchBtn"><i class="fa-solid fa-arrow-right"></i></button>
-          </div>
-          <div class="search-suggestions" id="sideSearchSuggestions"></div>
-      </div>
   </div>
   
 
@@ -678,10 +665,12 @@
       const buyNowBtn = document.querySelector('.buy-now-btn');
 
       // Add to Cart
-      addCartBtn.addEventListener('click', () => {
+      // --- Buy Now Logic (Add to Cart + Redirect) ---
+      buyNowBtn.addEventListener('click', () => {
         let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-        const quantity = parseInt(qtyInput.value); 
+        const quantity = parseInt(qtyInput.value);
 
+        // 1. Add item to cart first
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
           existingItem.quantity += quantity;
@@ -689,27 +678,19 @@
           cart.push({
             id: product.id,
             name: product.name,
-            price: finalPrice, // Save the DISCOUNTED price to cart
+            price: finalPrice, // Uses the calculated discounted price
             image: product.image,
             quantity: quantity
           });
         }
 
+        // 2. Save to storage
         localStorage.setItem('ravyn_cart', JSON.stringify(cart));
         updateCartCount();
 
-        // Button Feedback
-        const originalText = addCartBtn.innerText;
-        addCartBtn.innerText = "Added!";
-        addCartBtn.style.backgroundColor = "#fff";
-        addCartBtn.style.color = "#088178";
-        setTimeout(() => {
-          addCartBtn.innerText = originalText;
-          addCartBtn.style.backgroundColor = "black";
-          addCartBtn.style.color = "white";
-        }, 1000);
+        // 3. Redirect to Checkout Page
+        window.location.href = 'checkout.html';
       });
-
       // Buy Now (WhatsApp) - UPDATED with Discount Math
       buyNowBtn.addEventListener('click', () => {
         const quantity = parseInt(qtyInput.value);

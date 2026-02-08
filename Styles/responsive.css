@@ -140,7 +140,12 @@
     border: 1px solid gray;
   }
 }
-
+@media (max-width: 820px) {
+  .comparision-table-container {
+    padding-bottom: 40px; /* Adds internal space */
+    margin-bottom: 80px;  /* Pushes the container away from the bottom navbar */
+  }
+}
 
 @media (max-width: 600px) {
 
@@ -365,8 +370,7 @@
   /* Add padding to the bottom of the body so the navbar doesn't cover content */
   body {
     padding-bottom: 70px;
-  } 
-
+  }
 }
 
 @media (max-width: 400px) {
@@ -641,6 +645,13 @@
   }
 }
 @media (max-width: 360px){
+  body {
+    padding-bottom: 70px;
+  }
+  .hero-left{
+    width: 260px;
+    line-height: 20px;
+  }
   .products-grid{
     column-gap: -5px;
   }

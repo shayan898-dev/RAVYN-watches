@@ -21,14 +21,13 @@
     
     /* 1. Page Title Area */
     .cart-header-banner {
-      margin-top: 0px;
-      background-color: #888;
+      background-color: #1a1a1a;
       color: #fff;
       text-align: center;
-      padding: 40px 0;
+      padding: 30px 0;
       margin-bottom: 40px;
     }
-    .cart-header-banner h2 { font-size: 28px; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
+    .cart-header-banner h2 { margin: 0; font-size: 24px; letter-spacing: 2px; text-transform: uppercase; }
 
     /* 2. Cart Container */
     .cart-container {
@@ -142,16 +141,24 @@
     <div class="logo-container">
       <a href="index.html"><h1>RAVYN</h1></a>
     </div>
+    
     <div class="header-right-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search watches..." autocomplete="off">
+            <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+
         <a href="index.html"><p class="menu">Home</p></a>
-        <a href="about.html"><p class="menu">About</p></a>
+        <a href="collection.html"><p class="menu">Collection</p></a>
         <a href="cart.html"><i class="fa-solid fa-cart-shopping cart-button"><span>0</span></i></a>
         <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
     </div>
+
     <div class="mobile">
       <i id="bar" class="fas fa-outdent"></i>
     </div>    
-  </header>
+  </header> 
 
   <section class="cart-header-banner">
     <h2>Shopping Cart</h2>
@@ -177,7 +184,7 @@
         <span>SUBTOTAL:</span>
         <span id="subtotalDisplay">Rs 0.00</span>
       </div>
-      <button class="checkout-btn" onclick="alert('Proceeding to Checkout...')">Check Out</button>
+      <button class="checkout-btn" onclick="window.location.href='checkout.html'">Proceed to Checkout</button>
     </div>
 
   </section>
@@ -195,10 +202,15 @@
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="label">Cart</span>
     </a>
-    <a href="contact.html" class="mobile-nav-item">
-      <i class="fa-solid fa-envelope"></i>
-      <span class="label">Contact</span>
+    
+    <a href="checkout.html" class="mobile-nav-item">
+      <i class="fa-solid fa-credit-card"></i> <span class="label">Checkout</span>
     </a>
+    
+    <div class="mobile-nav-item" id="mobileSearchTrigger">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span class="label">Search</span>
+    </div>
   </div>
 
   <script src="./Script/data.js"></script>

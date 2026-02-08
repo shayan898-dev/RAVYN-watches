@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - RAVYN</title>
+  
+  <link rel="stylesheet" href="./Styles/header-footer.css">
+  <link rel="stylesheet" href="./Styles/responsive.css">
+  <link rel="stylesheet" href="./css/all.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: rgb(240, 240, 240); margin: 0; padding: 0; }
+
+    .page-banner {
+      background-color: #1a1a1a;
+      color: #fff;
+      text-align: center;
+      padding: 30px 0;
+      margin-bottom: 40px;
+    }
+    .page-banner h2 { margin: 0; font-size: 24px; letter-spacing: 2px; text-transform: uppercase; }
+
+    .checkout-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      margin-bottom: 100px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .billing-col { flex: 1.5; min-width: 300px; }
+    .order-col { flex: 1; min-width: 300px; }
+
+    h3.section-title {
+      font-size: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      outline: none;
+    }
+    .two-col-input { display: flex; gap: 15px; }
+
+    /* Payment Toggle Styling */
+    .payment-details-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 5px solid black;
+      margin-top: 30px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .payment-option-container {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .payment-option-container:last-child { border-bottom: none; }
+    
+    .radio-label { font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 16px; }
+    .payment-info { padding: 10px 0 10px 25px; display: none; } 
+    .payment-info.active { display: block; }
+
+    .bank-info { background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ddd; }
+    .note-box { background: #fff3cd; padding: 10px; border-radius: 5px; font-weight: bold; margin-top: 10px; color: #856404; }
+
+    /* Order Summary Box */
+    .order-box {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border: 1px solid #eee;
+      position: sticky;
+      top: 20px;
+    }
+
+    .summary-product {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .summary-product i.fa-trash { color: #ff4d4d; margin-right: 12px; cursor: pointer; }
+
+    .summary-total {
+      margin-top: 15px;
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 18px;
+      color: black;
+      border-top: 2px solid #000;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      background-color: black;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .checkout-container { flex-direction: column; }
+      .billing-col { order: 1; }
+      .order-col { order: 2; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo-container">
+      <a href="index.html"><h1>RAVYN</h1></a>
+    </div>
+    <div class="header-right-section">
+        <a href="index.html"><p class="menu">Home</p></a>
+        <a href="collection.html"><p class="menu">Shop</p></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping cart-button"><span>0</span></i></a>
+    </div>
+  </header>
+
+  <section class="page-banner">
+    <h2>Secure Checkout</h2>
+  </section>
+
+  <section class="checkout-container">
+    <div class="billing-col">
+      <h3 class="section-title">Billing Details</h3>
+      <form id="checkoutForm">
+        <div class="two-col-input">
+          <div class="form-group" style="flex:1;">
+            <label>First Name *</label>
+            <input type="text" id="fName" required>
+          </div>
+          <div class="form-group" style="flex:1; margin-left: 10px;">
+            <label>Last Name *</label>
+            <input type="text" id="lName" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="phone" placeholder="03xx xxxxxxx" required>
+        </div>
+        <div class="form-group">
+          <label>Street Address *</label>
+          <input type="text" id="address" required>
+        </div>
+        <div class="form-group">
+          <label>City *</label>
+          <input type="text" id="city" required>
+        </div>
+        <div class="form-group">
+          <label>Order Notes (Optional)</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+      </form>
+
+      <div class="payment-details-box">
+        <h3 class="section-title" style="border:none; font-size: 16px;">Payment Method</h3>
+        
+        <div class="payment-option-container">
+            <label class="radio-label">
+                <input type="radio" name="paymentMethod" value="Cash on Delivery" checked onchange="togglePaymentInfo()">
+                Cash on Delivery (COD)
+            </label>
+            <div id="codInfo" class="payment-info active">
+                <p><strong>Thank you for your order!</strong></p>
+                <p>Order confirm krny ky liye ap ko <strong>300 advance</strong> send krny hoo, jo kay Total payment main sy minus kr diay jay gy.</p>
+                <p>Payment send krny ky bad screenshot bhejna na bholiyay ga is WhatsApp number par: <strong>0343 7940506</strong> (WhatsApp only)</p>
+                
+                <h4>Payment Details for Advance:</h4>
+                <div class="bank-info">
+                    <strong>Easypaisa / Sadapay / Nayapay:</strong><br>
+                    Name: Muhammad Sheharyar<br>
+                    Number: 03194807902
+                </div>
+                <div class="bank-info">
+                    <strong>Jazzcash:</strong><br>
+                    Name: Muhammad Shakoor<br>
+                    Number: 03194807908
+                </div>
+                <div class="bank-info">
+                    <strong>Bank Transfer (Bank of Punjab):</strong><br>
+                    Account Title: Muhammad Sheharyar<br>
+                    Account Number: 6010261451100012<br>
+                    IBAN: PK13BPUN6010261451100012
+                </div>
+                <div class="note-box">
+                    Note: Payment k baad screenshot bhejna na bhoolna is WhatsApp number par: 0343 7940506 (WhatsApp only)
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-option-container">
+            <label class="radio-label">
+                <input type="radio" name="paymentMethod" value="Advance Payment" onchange="togglePaymentInfo()">
+                Full Advance Payment
+            </label>
+            <div id="advanceInfo" class="payment-info">
+                <p><strong>Thank you for your order!</strong></p>
+                <p>Payment send krny ky bad screenshot bhejna na bholiyay ga is WhatsApp number par: <strong>0343 7940506</strong> (WhatsApp only)</p>
+                
+                <h4>Payment Details:</h4>
+                <div class="bank-info">
+                    <strong>Easypaisa / Sadapay / Nayapay:</strong><br>
+                    Name: Muhammad Sheharyar<br>
+                    Number: 03194807902
+                </div>
+                <div class="bank-info">
+                    <strong>Jazzcash:</strong><br>
+                    Name: Muhammad Shakoor<br>
+                    Number: 03194807908
+                </div>
+                <div class="bank-info">
+                    <strong>Bank Transfer (Bank of Punjab):</strong><br>
+                    Account Title: Muhammad Sheharyar<br>
+                    Account Number: 6010261451100012<br>
+                    IBAN: PK13BPUN6010261451100012
+                </div>
+                <div class="note-box">
+                    Note: Payment k baad screenshot bhejna na bhoolna is WhatsApp number par: 0343 7940506 (WhatsApp only)
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-col">
+      <div class="order-box">
+        <h3 class="section-title">Order Summary</h3>
+        <div id="orderItems"></div>
+        <div class="summary-product" style="border-top: 1px solid black; margin-top: 10px; border-bottom: none;">
+          <span>Subtotal</span>
+          <span id="subtotalPrice">Rs 0</span>
+        </div>
+        <div class="summary-product" style="border-bottom: none;">
+          <span>Shipping</span>
+          <span style="color: green;">Free</span>
+        </div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span id="totalPrice" style="color: red;">Rs 0</span>
+        </div>
+        <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="mobile-navbar">
+    <a href="index.html" class="mobile-nav-item"><i class="fa-solid fa-house"></i><span class="label">Home</span></a>
+    <a href="collection.html" class="mobile-nav-item"><i class="fa-solid fa-shop"></i><span class="label">Shop</span></a>
+    <a href="cart.html" class="mobile-nav-item"><i class="fa-solid fa-cart-shopping"></i><span class="label">Cart</span></a>
+    <a href="checkout.html" class="mobile-nav-item"><i class="fa-solid fa-credit-card"></i><span class="label">Checkout</span></a>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+
+    function togglePaymentInfo() {
+        const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+        const codBox = document.getElementById('codInfo');
+        const advanceBox = document.getElementById('advanceInfo');
+
+        if(method === "Cash on Delivery") {
+            codBox.classList.add('active');
+            advanceBox.classList.remove('active');
+        } else {
+            advanceBox.classList.add('active');
+            codBox.classList.remove('active');
+        }
+    }
+
+    function loadOrderSummary() {
+        const container = document.getElementById('orderItems');
+        const placeOrderBtn = document.querySelector('.place-order-btn');
+        
+        // BUG FIX: If cart is empty, reset display and disable button
+        if(cart.length === 0) {
+            container.innerHTML = `<p style="text-align:center; padding: 20px; color: gray;">Your cart is empty.</p>`;
+            document.getElementById('subtotalPrice').innerText = "Rs 0";
+            document.getElementById('totalPrice').innerText = "Rs 0";
+            
+            if(placeOrderBtn) {
+                placeOrderBtn.style.opacity = "0.5";
+                placeOrderBtn.style.cursor = "not-allowed";
+                placeOrderBtn.innerText = "Cart is Empty";
+            }
+            return;
+        }
+
+        // Reset button if items are present
+        if(placeOrderBtn) {
+            placeOrderBtn.style.opacity = "1";
+            placeOrderBtn.style.cursor = "pointer";
+            placeOrderBtn.innerText = "Place Order";
+        }
+
+        let html = '';
+        let total = 0;
+        cart.forEach((item, index) => {
+            let lineTotal = item.price * item.quantity;
+            total += lineTotal;
+            html += `
+            <div class="summary-product">
+                <span>
+                    <i class="fa-solid fa-trash" onclick="removeFromCart(${index})"></i> 
+                    ${item.name} x ${item.quantity}
+                </span>
+                <span class="price">Rs ${lineTotal.toLocaleString()}</span>
+            </div>`;
+        });
+
+        container.innerHTML = html;
+        document.getElementById('subtotalPrice').innerText = "Rs " + total.toLocaleString();
+        document.getElementById('totalPrice').innerText = "Rs " + total.toLocaleString();
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('ravyn_cart', JSON.stringify(cart));
+        loadOrderSummary();
+        
+        // Update header cart count if visible
+        const cartCount = document.querySelector('.cart-button span');
+        if(cartCount) {
+            const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
+            cartCount.innerText = totalQty;
+        }
+    }
+
+    function placeOrder() {
+        // BUG FIX: Stop execution if cart is empty
+        if(cart.length === 0) {
+            alert("Your cart is empty. Please add items before placing an order.");
+            return;
+        }
+
+        const fName = document.getElementById('fName').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+        if(!fName || !phone || !address || !city) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        let message = `*New Order - RAVYN Luxury Store*\n\n`;
+        message += `*Customer:* ${fName}\n*Phone:* ${phone}\n*Address:* ${address}, ${city}\n`;
+        message += `*Payment Method:* ${method}\n\n`;
+        message += `*Items Ordered:* \n`;
+        
+        let finalTotal = 0;
+        cart.forEach(item => {
+            message += `- ${item.name} (x${item.quantity}) - Rs ${item.price * item.quantity}\n`;
+            finalTotal += item.price * item.quantity;
+        });
+        
+        message += `\n*Total Bill:* Rs ${finalTotal}\n`;
+        if(method === "Cash on Delivery") {
+            message += `*Note:* Sending Rs 300 Advance to confirm COD.`;
+        }
+
+        const url = `https://wa.me/923107715463?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
+    loadOrderSummary();
+  </script>
+</body>
+</html>
