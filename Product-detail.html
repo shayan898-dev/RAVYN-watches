@@ -101,7 +101,7 @@
       .pro-price {
         font-size: 26px;
         font-weight: bold;
-        color: #088178; /* Theme color */
+        color: red; /* Theme color */
         margin-bottom: 20px;
       }
       /* --- Add these to your existing CSS --- */
@@ -141,6 +141,7 @@
         margin-bottom: 20px;
         overflow: hidden;         /* Keeps the button backgrounds inside the rounded border */
         background-color: #fff;
+        margin-right: 15px;
       }
 
       /* The Input Field (Center) */
@@ -185,20 +186,17 @@
         background: #fff;
         color: black;
         padding: 11px 30px;
-        border: 2px solid black;
+        border: 1px solid black;
         cursor: pointer;
+        font-weight: bold;
         border-radius: 25px;
         font-size: 16px;
         transition: 0.3s;
+        letter-spacing: 1px;
         margin-top: 0px;
         margin-right: 10px;
         margin-left: 0px;
         margin-bottom: 20px; /* Adds space if they stack */
-      }
-      
-      .add-cart-btn:hover {
-        background: black;
-        color: white;
       }
 
       .buy-now-btn {
@@ -212,11 +210,7 @@
         transition: 0.3s;
         margin-bottom: 10px;
         width: 49%;
-      }
-
-      .buy-now-btn:hover {
-        background: black;
-        color: white;
+        letter-spacing: 1px;
       }
 
       .single-pro-details h4 {
@@ -245,7 +239,13 @@
         border-radius: 6px;
         padding: 15px 0px;
       }
-
+      .status-text{
+        font-weight: bold;
+        margin:5px 0px;
+      }
+      .status{
+        text-align: center;
+      }
       .t4s-table-res-df {
         min-height: .01%;
         overflow-x: auto;
@@ -558,29 +558,28 @@
   </footer>
 
   <div class="mobile-navbar">
-  <a href="index.html" class="mobile-nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span class="label">Home</span>
-  </a>
-  <a href="collection.html" class="mobile-nav-item">
-    <i class="fa-solid fa-shop"></i>
-    <span class="label">Shop</span>
-  </a>
-  <a href="cart.html" class="mobile-nav-item">
-    <i class="fa-solid fa-cart-shopping"></i>
-    <span class="label">Cart</span>
-  </a>
-  <a href="contact.html" class="mobile-nav-item">
-    <i class="fa-solid fa-envelope"></i>
-    <span class="label">Contact</span>
-  </a>
-  
-  <div class="mobile-nav-item" id="mobileSearchTrigger">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="label">Search</span>
+    <a href="index.html" class="mobile-nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span class="label">Home</span>
+    </a>
+    <a href="collection.html" class="mobile-nav-item">
+      <i class="fa-solid fa-shop"></i>
+      <span class="label">Shop</span>
+    </a>
+    <a href="cart.html" class="mobile-nav-item">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span class="label">Cart</span>
+    </a>
+    <a href="contact.html" class="mobile-nav-item">
+      <i class="fa-solid fa-envelope"></i>
+      <span class="label">Contact</span>
+    </a>
+    
+    <div class="mobile-nav-item" id="mobileSearchTrigger">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span class="label">Search</span>
+    </div>
   </div>
-  </div>
-
   <div class="search-side-panel" id="sideSearchPanel">
       <div class="panel-header">
           <h2>Search</h2>
@@ -594,6 +593,7 @@
           <div class="search-suggestions" id="sideSearchSuggestions"></div>
       </div>
   </div>
+  
 
   <script src="./Script/data.js"></script>
 

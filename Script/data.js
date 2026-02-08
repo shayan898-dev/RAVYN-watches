@@ -7,7 +7,7 @@ const products = [
     images: [],
     name: 'Bugatti Luxury Watch',
     price: 19000,
-    dis: 30,
+    dis: 0,
     description: 'A masterpiece of precision and style...'
   },
   {
