@@ -249,8 +249,28 @@
     padding:8px 14px;
   }
 }
-.search-side-panel{
-  display: none;
+.side-search-panel {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Hidden by default */
+    width: 300px;
+    height: 100%;
+    background: white;
+    z-index: 2000;
+    transition: right 0.3s ease;
+    padding: 20px;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+}
+
+.side-search-panel.active {
+    right: 0; /* Slides in */
+}
+
+.side-search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 .mobile-navbar {
   display: none;

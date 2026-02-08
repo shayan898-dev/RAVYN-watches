@@ -44,6 +44,7 @@
 /* Ensure the search container is relative so suggestions position correctly */
 .search-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   background: white;
   border-radius: 20px;
