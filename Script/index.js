@@ -130,12 +130,17 @@ function renderProducts(category, limit, containerSelector, customList = null) {
            </div>`
         : `<h4 class="product-price">Rs ${product.price}/-</h4>`;
 
+    // Modified Logic: Only generate HTML for the discount badge if the discount is greater than 0
+    const discountBadgeHTML = hasDiscount 
+        ? `<div class="dis-container">
+            <p class="discount">${product.dis}% OFF</p>
+           </div>` 
+        : '';
+
     html += `
       <div class="products js-product" onclick="window.location.href='Product-detail.html?id=${product.id}'">
         <div class="products-top">
-          <div class="dis-container ${product.dis === 0 ? 'dis-container-display' : ''}">
-            <p class="discount">${product.dis}% OFF</p>
-          </div>
+          ${discountBadgeHTML}
           <img class="product-image" src="${product.image}" alt="${product.name}">
         </div>
         <div class="product-bottom">
