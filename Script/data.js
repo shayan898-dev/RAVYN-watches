@@ -4,10 +4,19 @@ const products = [
     category: 'men-watch',
     image: './Images/product/product-6.jpeg', // Main default image
     // NEW: Add this array for your gallery images (Max 8)
-    images: [],
+    images: [
+      './Images/product/product-6.jpeg',
+      './Images/product/product-6.jpeg',
+      './Images/product/product-6.jpeg',
+      './Images/product/product-6.jpeg',
+      './Images/product/product-6.jpeg',
+      './Images/product/product-6.jpeg',
+      './Images/product/product-6.jpeg',
+      './Images/product/product-6.jpeg'
+    ],
     name: 'Bugatti Luxury Watch',
     price: 19000,
-    dis: 13,
+    dis: 0,
     description: 'A masterpiece of precision and style...'
   },
   {

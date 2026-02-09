@@ -4,9 +4,8 @@
   align-items: center;
   width: 100%;
   height: 80px;
-  background-color: rgb(195, 195, 195);
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
+  background-color: black;
+  color: white;
   box-sizing: border-box;
   padding: 0 50px;
   z-index: 999;
@@ -15,6 +14,7 @@
   margin-left: 10px;
 }
 .logo-container h1{
+  color: white;
   font-family: 'Times New Roman', Times, serif;
 }
 .search-container {
@@ -121,15 +121,17 @@
   margin-left:10px;
   position: relative;
   bottom: 0;
+  color: white;
 }
 .cart-button span{
   font-size: 7px;
-  color: white;
+  font-family: Arial, Helvetica, sans-serif;
   border-radius: 50%;
   position: absolute;
   top: 30%;
   left: 50%;
   transform: translate(-50% , -50%);
+  color: black;
 }
 #close{
   display: none;
@@ -144,6 +146,7 @@
   font-size: 18px;
   cursor: pointer;
   transition: color 0.2s linear;
+  color: white;
 }
 .menu::after{
   content: '';
@@ -169,7 +172,8 @@
   margin-top: 50px;
   box-shadow: 10px 10px 50px rgb(37, 37, 37);
   font-family: arial;
-  background-color: rgb(192, 192, 192);
+  background-color: black;
+  color: white;
   bottom: 0;
 }
 .footer-left-section{

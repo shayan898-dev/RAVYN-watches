@@ -22,7 +22,7 @@ i{
   height: 80vh;
   margin: 20px 30px;
   border-radius: 10px;
-  box-shadow: 10px 10px 60px black;
+  box-shadow: 20px 20px 60px black;
   /*box-shadow: 5px 5px 15px rgba(0,0,0,0.3);*/
   background-image: url(../Images/hero-section.png);
   background-repeat: no-repeat;
@@ -217,7 +217,7 @@ i{
 /* The Old Price (Crossed Out) */
 .discount-price {
   margin: 0;
-  color: gray; /* Gray looks better for old prices than red usually */
+  color: red; /* Gray looks better for old prices than red usually */
   text-decoration: line-through;
   font-size: 13px;
 }
@@ -227,7 +227,7 @@ i{
   font-size: 18px;
   font-weight: 700;
   margin: 0;
-  color: red; /* Keep the main price red or black as preferred */
+  color: black; /* Keep the main price red or black as preferred */
 }
 
 .button-container{
