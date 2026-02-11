@@ -1,243 +1,181 @@
-// --- 1. Mobile Menu Logic (Hamburger Menu) ---
+// --- 1. Mobile Menu Logic ---
 const bar = document.getElementById('bar');
 const nav = document.querySelector('.header-right-section');
 const close = document.getElementById('close');
 
-if (bar) {
-  bar.addEventListener('click', () => nav.classList.add('active'));
-}
-if (close) {
-  close.addEventListener('click', () => nav.classList.remove('active'));
-}
+if (bar) bar.addEventListener('click', () => nav.classList.add('active'));
+if (close) close.addEventListener('click', () => nav.classList.remove('active'));
 
-// --- 2. Mobile Side Search Panel Logic ---
+// --- 2. Mobile Side Search Logic ---
 const mobileSearchTrigger = document.getElementById('mobileSearchTrigger');
 const sideSearchPanel = document.getElementById('sideSearchPanel');
 const closeSideSearch = document.getElementById('closeSideSearch');
 
 if (mobileSearchTrigger && sideSearchPanel) {
     mobileSearchTrigger.addEventListener('click', () => {
-        sideSearchPanel.classList.add('active'); // Slides in from the right
-        // Automatically focus the input for the user
+        sideSearchPanel.classList.add('active');
         setTimeout(() => document.getElementById('sideSearchInput').focus(), 300);
     });
 }
-
 if (closeSideSearch && sideSearchPanel) {
-    closeSideSearch.addEventListener('click', () => {
-        sideSearchPanel.classList.remove('active'); // Slides out to the right
-    });
+    closeSideSearch.addEventListener('click', () => sideSearchPanel.classList.remove('active'));
 }
 
-// --- 3. Unified Search & Suggestion Logic ---
+// --- 3. Unified Search Suggestions ---
 function setupSearch(inputId, btnId, suggestionsId) {
     const input = document.getElementById(inputId);
-    const btn = document.getElementById(btnId);
     const suggestionsBox = document.getElementById(suggestionsId);
-
     if (!input || !suggestionsBox) return;
 
-    // Handle instant suggestions as the user types
     input.addEventListener('input', function() {
         const query = this.value.toLowerCase().trim();
         suggestionsBox.innerHTML = '';
-
-        if (query.length === 0) {
-            suggestionsBox.style.display = 'none';
-            return;
-        }
-
+        if (query.length === 0) { suggestionsBox.style.display = 'none'; return; }
+        
         const matches = products.filter(p => p.name.toLowerCase().includes(query));
-
         if (matches.length > 0) {
             matches.forEach(product => {
                 const div = document.createElement('div');
                 div.classList.add('suggestion-item');
                 div.innerHTML = `
                     <img src="${product.image}" alt="${product.name}" class="suggestion-img">
-                    <div class="suggestion-info">
-                        <h4>${product.name}</h4>
-                        <p>Rs ${product.price}</p>
-                    </div>
-                `;
-                div.addEventListener('click', () => {
-                    window.location.href = `Product-detail.html?id=${product.id}`;
-                });
+                    <div class="suggestion-info"><h4>${product.name}</h4><p>Rs ${product.price}</p></div>`;
+                div.addEventListener('click', () => window.location.href = `Product-detail.html?id=${product.id}`);
                 suggestionsBox.appendChild(div);
             });
             suggestionsBox.style.display = 'block';
-        } else {
-            suggestionsBox.style.display = 'none';
-        }
-    });
-
-    // Execute full search on Enter or Button Click
-    const execute = () => {
-        const query = input.value.trim();
-        if (query) {
-            window.location.href = `collection.html?search=${encodeURIComponent(query)}`;
-        }
-    };
-
-    if (btn) btn.addEventListener('click', execute);
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') execute();
-    });
-
-    // Close suggestions if clicking outside the search area
-    document.addEventListener('click', (e) => {
-        if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
-            suggestionsBox.style.display = 'none';
-        }
+        } else { suggestionsBox.style.display = 'none'; }
     });
 }
-
-// Initialize Desktop and Mobile Side-Panel searches
 setupSearch('searchInput', 'searchBtn', 'searchSuggestions');
 setupSearch('sideSearchInput', 'sideSearchBtn', 'sideSearchSuggestions');
 
-// --- 4. Product Rendering Function ---
+// --- 4. Product Rendering ---
 function renderProducts(category, limit, containerSelector, customList = null) {
-  const container = document.querySelector(containerSelector);
-  if (!container) return; 
+    const container = document.querySelector(containerSelector);
+    if (!container) return; 
+    let filteredList = customList || products;
+    if (!customList && category !== 'all') filteredList = products.filter(p => p.category === category);
+    if (limit) filteredList = filteredList.slice(0, limit);
+    
+    let html = '';
+    if (filteredList.length === 0) {
+        container.innerHTML = `<p style="text-align: center; padding: 50px;">No products found.</p>`;
+        return;
+    }
 
-  let filteredList = customList || products;
-  if (!customList && category !== 'all') {
-    filteredList = products.filter(p => p.category === category);
-  }
+    filteredList.forEach(product => {
+        const hasDiscount = product.dis > 0;
+        const finalPrice = hasDiscount ? Math.floor(product.price - (product.price * (product.dis / 100))) : product.price;
+        const priceDisplay = hasDiscount 
+            ? `<div class="price-stack"><p class="discount-price">Rs ${product.price}</p><h4 class="product-price">Rs ${finalPrice}/-</h4></div>`
+            : `<h4 class="product-price">Rs ${product.price}/-</h4>`;
 
-  if (limit) {
-    filteredList = filteredList.slice(0, limit);
-  }
-
-  let html = '';
-  
-  if (filteredList.length === 0) {
-    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; font-size: 20px; padding: 50px;">No products found.</p>`;
-    return;
-  }
-
-  filteredList.forEach(product => {
-    const hasDiscount = product.dis > 0;
-    const finalPrice = hasDiscount 
-        ? Math.floor(product.price - (product.price * (product.dis / 100))) 
-        : product.price;
-
-    const priceDisplay = hasDiscount 
-        ? `<div class="price-stack">
-             <p class="discount-price">Rs ${product.price}</p>
-             <h4 class="product-price">Rs ${finalPrice}/-</h4>
-           </div>`
-        : `<h4 class="product-price">Rs ${product.price}/-</h4>`;
-
-    // Modified Logic: Only generate HTML for the discount badge if the discount is greater than 0
-    const discountBadgeHTML = hasDiscount 
-        ? `<div class="dis-container">
-            <p class="discount">${product.dis}% OFF</p>
-           </div>` 
-        : '';
-
-    html += `
-      <div class="products js-product" onclick="window.location.href='Product-detail.html?id=${product.id}'">
-        <div class="products-top">
-          ${discountBadgeHTML}
-          <img class="product-image" src="${product.image}" alt="${product.name}">
-        </div>
-        <div class="product-bottom">
-          <p class="product-owner">RAVYN Watch</p>
-          <div class="product-name-container"><h2 class="product-name">${product.name}</h2></div>
-          <div class="parice-button-container"> 
-            ${priceDisplay} <i class="fa-solid fa-cart-shopping"></i>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  container.innerHTML = html;
+        html += `
+            <div class="products" onclick="window.location.href='Product-detail.html?id=${product.id}'">
+                <div class="products-top">
+                    ${hasDiscount ? `<div class="dis-container"><p class="discount">${product.dis}% OFF</p></div>` : ''}
+                    <img class="product-image" src="${product.image}">
+                </div>
+                <div class="product-bottom">
+                    <p class="product-owner">RAVYN Watch</p>
+                    <div class="product-name-container"><h2 class="product-name">${product.name}</h2></div>
+                    <div class="parice-button-container">${priceDisplay} <i class="fa-solid fa-cart-shopping"></i></div>
+                </div>
+            </div>`;
+    });
+    container.innerHTML = html;
 }
 
-// --- 5. EXECUTION LOGIC ---
-const collectionContainer = document.querySelector('.js-collection-grid');
+// --- 5. Initial Product Load ---
 const homeContainer = document.querySelector('.js-product-grid');
-
-if (collectionContainer) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const categoryParam = urlParams.get('category') || 'all'; 
-  const searchParam = urlParams.get('search');
-
-  if (searchParam) {
-    const query = searchParam.toLowerCase();
-    const searchResults = products.filter(p => 
-      p.name.toLowerCase().includes(query) || 
-      p.category.toLowerCase().includes(query)
-    );
-    
-    const heading = document.querySelector('.product-heading');
-    if (heading) heading.innerText = `Search Results for: "${searchParam}"`;
-    
-    renderProducts(null, null, '.js-collection-grid', searchResults);
-  } else {
-    renderProducts(categoryParam, null, '.js-collection-grid');
-  }
-} 
-else if (homeContainer) {
-  renderProducts('all', 8, '.js-product-grid');
-  renderProducts('men-watch', 4, '.js-product-grid-men');
-  renderProducts('women-watch', 4, '.js-product-grid-women');
-  renderProducts('rolex-watch', 4, '.js-product-grid-rolex');
-  renderProducts('patek-watch', 4, '.js-product-grid-patek');
-  renderProducts('automatic-watch', 4, '.js-product-grid-automatic');
+if (homeContainer) {
+    renderProducts('all', 8, '.js-product-grid');
+    renderProducts('men-watch', 4, '.js-product-grid-men');
+    renderProducts('women-watch', 4, '.js-product-grid-women');
+    renderProducts('rolex-watch', 4, '.js-product-grid-rolex');
+    renderProducts('patek-watch', 4, '.js-product-grid-patek');
+    renderProducts('automatic-watch', 4, '.js-product-grid-automatic');
 }
 
-// --- 6. Utilities ---
+// --- 6. Smooth Scroll-Back Carousel with Updated Mapping ---
+const sliderContainer = document.querySelector('.slider-container');
+const sliderTrack = document.querySelector('.slider-track');
+const slidesList = document.querySelectorAll('.slide');
+let autoPlayInterval;
 
+// UPDATED: Keys here MUST match the <p> text in your HTML exactly
+const sectionMapping = {
+    'Men Watch': '.js-product-grid-men',
+    'Women Watch': '.js-product-grid-women',
+    'Men Bracelet': '.fe-products',
+    'Women Bracelet': '.fe-products',
+    'Rolex Watches': '.js-product-grid-rolex',
+    'Patek Philippe': '.js-product-grid-patek',
+    'Automatic Watches': '.js-product-grid-automatic'
+};
+
+function moveCarousel() {
+    if (!sliderContainer || !sliderTrack) return;
+
+    const scrollAmount = sliderContainer.clientWidth; 
+    const maxScroll = sliderTrack.scrollWidth - sliderContainer.clientWidth;
+
+    if (sliderContainer.scrollLeft >= maxScroll - 10) {
+        sliderContainer.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+        sliderContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+}
+
+function startAutoPlay() {
+    if (sliderContainer) autoPlayInterval = setInterval(moveCarousel, 4000);
+}
+
+function stopAutoPlay() { clearInterval(autoPlayInterval); }
+
+if (sliderContainer) {
+    startAutoPlay();
+
+    // Attach Click Navigation to Sections
+    slidesList.forEach(slide => {
+        slide.addEventListener('click', (e) => {
+            stopAutoPlay();
+            const categoryName = slide.querySelector('p').innerText.trim();
+            const targetSelector = sectionMapping[categoryName];
+            
+            if (targetSelector) {
+                const targetEl = document.querySelector(targetSelector);
+                if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            
+            // Resume autoplay after 5 seconds
+            setTimeout(startAutoPlay, 5000); 
+        });
+    });
+
+    // Handle Manual Interaction to prevent lag during transition
+    sliderContainer.addEventListener('mousedown', stopAutoPlay);
+    sliderContainer.addEventListener('touchstart', stopAutoPlay);
+}
+
+// --- 7. Utility Functions ---
 function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
-  const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const countElement = document.querySelector('.cart-button span');
-  if (countElement) {
-    countElement.innerText = totalCount;
-    countElement.style.display = totalCount > 0 ? 'block' : 'none';
-  }
+    const cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
+    const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const countElement = document.querySelector('.cart-button span');
+    if (countElement) {
+        countElement.innerText = totalCount;
+        countElement.style.display = totalCount > 0 ? 'block' : 'none';
+    }
 }
 updateCartCount();
 
-const track = document.querySelector('.slider-track');
-const slideWidth = 200; 
-let autoPlayInterval;
-
-function updateActive() {
-  const slides = document.querySelectorAll('.slide');
-  if (slides.length > 0) {
-    slides.forEach(s => s.classList.remove('active'));
-    if(slides[2]) slides[2].classList.add('active');
-  }
-}
-
-function moveNext() {
-  if (!track) return;
-  track.style.transition = 'transform 0.5s linear';
-  track.style.transform = `translateX(-${slideWidth}px)`;
-  setTimeout(() => {
-    track.style.transition = 'none';
-    track.appendChild(track.firstElementChild);
-    track.style.transform = 'translateX(0)';
-    updateActive();
-  }, 500);
-}
-
-function startAutoPlay() { if(track) autoPlayInterval = setInterval(moveNext, 2500); }
-function stopAutoPlay() { clearInterval(autoPlayInterval); }
-if (track) {
-  updateActive();
-  startAutoPlay();
-}
-
 const exploreBtn = document.getElementById('exploreBtn');
-const featuredSection = document.querySelector('.fe-products');
-if (exploreBtn && featuredSection) {
-  exploreBtn.addEventListener('click', () => {
-    featuredSection.scrollIntoView({ behavior: 'smooth' });
-  });
+if (exploreBtn) {
+    exploreBtn.addEventListener('click', () => {
+        document.querySelector('.fe-products').scrollIntoView({ behavior: 'smooth' });
+    });
 }

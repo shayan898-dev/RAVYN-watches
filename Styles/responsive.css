@@ -45,13 +45,16 @@
 
 /* Responsive adjustment for mobile */
 @media (max-width: 767px) {
-    .whatsapp-float {
-        width: 50px;
-        height: 50px;
-        bottom: 80px; /* Raised slightly to stay above mobile navbars */
-        right: 20px;
-        font-size: 25px;
-    }
+  .whatsapp-float {
+      width: 50px;
+      height: 50px;
+      bottom: 80px; /* Raised slightly to stay above mobile navbars */
+      right: 20px;
+      font-size: 25px;
+  }
+  .slide p {
+    font-size: 16px;
+  }
 }
 @media (max-width: 799px) {
   .header-right{
