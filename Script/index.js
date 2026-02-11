@@ -88,8 +88,35 @@ function renderProducts(category, limit, containerSelector, customList = null) {
 }
 
 // --- 5. Initial Product Load ---
-const homeContainer = document.querySelector('.js-product-grid');
-if (homeContainer) {
+// --- 5. EXECUTION LOGIC (Decides what to render on which page) ---
+const collectionContainer = document.querySelector('.js-collection-grid'); // Shop page grid
+const homeContainer = document.querySelector('.js-product-grid'); // Home page grid
+
+// If we are on the Shop (Collection) page
+if (collectionContainer) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category') || 'all'; // Get category from URL or default to 'all'
+    const searchParam = urlParams.get('search');
+
+    if (searchParam) {
+        // Handle Search Results
+        const query = searchParam.toLowerCase();
+        const searchResults = products.filter(p => 
+            p.name.toLowerCase().includes(query) || 
+            p.category.toLowerCase().includes(query)
+        );
+        
+        const heading = document.querySelector('.product-heading');
+        if (heading) heading.innerText = `Search Results for: "${searchParam}"`;
+        
+        renderProducts(null, null, '.js-collection-grid', searchResults);
+    } else {
+        // Render regular collection
+        renderProducts(categoryParam, null, '.js-collection-grid');
+    }
+} 
+// If we are on the Home page
+else if (homeContainer) {
     renderProducts('all', 8, '.js-product-grid');
     renderProducts('men-watch', 4, '.js-product-grid-men');
     renderProducts('women-watch', 4, '.js-product-grid-women');
