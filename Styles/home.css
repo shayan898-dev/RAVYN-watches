@@ -348,3 +348,52 @@ i{
 }
 .prev-btn { left: 20px; }
 .next-btn { right: 20px; }
+
+/* =========================
+   REVIEWS SECTION STYLES
+========================== */
+
+/* --- Scrollable Review Section --- */
+.reviews-section {
+    padding: 40px 20px;
+    background-color: #fff;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 2px solid gray;
+    background-color: rgb(240, 240, 240);
+}
+
+.reviews-grid-container {
+    display: flex; /* Changed from grid to flex for horizontal scrolling */
+    gap: 20px;
+    overflow-x: auto; /* Enables manual scrolling */
+    padding: 20px 10px;
+    scroll-snap-type: x mandatory; /* Makes cards snap into place */
+    scroll-behavior: smooth;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #000 #e0e0e0;
+}
+
+/* Custom Scrollbar for Chrome/Safari */
+.reviews-grid-container::-webkit-scrollbar {
+    height: 6px;
+}
+.reviews-grid-container::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 10px;
+}
+.reviews-grid-container::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 10px;
+}
+
+.review-card {
+    flex: 0 0 300px; /* Fixed width so they don't shrink */
+    scroll-snap-align: start; /* Snap point */
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 80px;
+}

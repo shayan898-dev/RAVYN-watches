@@ -55,6 +55,12 @@
   .slide p {
     font-size: 16px;
   }
+    .reviews-grid-container {
+        padding: 20px 10px;
+    }
+    .review-card {
+        padding: 20px;
+    }
 }
 @media (max-width: 799px) {
   .header-right{
@@ -171,8 +177,6 @@
     margin: 0px;
   }
 }
-
-
 @media (max-width: 900px) {
   .hero-section{
     background-position: center center;
@@ -199,6 +203,19 @@
   .comparision-table-container {
     padding-bottom: 40px; /* Adds internal space */
     margin-bottom: 80px;  /* Pushes the container away from the bottom navbar */
+  }
+  /* --- Fix for Mobile Navbar Overlapping Content --- */
+  body {
+      /* Adds space at the bottom of every page so content isn't hidden */
+      padding-bottom: 90px !important; 
+  }
+
+  /* Keeps the WhatsApp button visible above the navbar on all pages */
+  .whatsapp-float {
+      bottom: 100px !important; 
+  }
+  .cart-summary, .checkout-container {
+      margin-bottom: 20px;
   }
 }
 
@@ -741,4 +758,10 @@
   .products{
     width: 150px;
   }
+}
+
+@media (max-width: 480px) {
+    .review-card {
+        flex: 0 0 85%; /* Shows most of one card on mobile */
+    }
 }
