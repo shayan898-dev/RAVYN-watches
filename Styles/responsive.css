@@ -293,6 +293,7 @@
 }
 .mobile-navbar {
   display: none;
+  margin-top: 1px;
 }
 
 @media (max-width: 430px) {
@@ -376,6 +377,7 @@
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 2000; /* Ensure it stays above other elements */
     border-top: 1px solid #ddd;
+    margin-top: 1px;
   }
 
   .mobile-nav-item {

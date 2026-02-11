@@ -22,7 +22,6 @@
         padding: 0;
         margin: 0;
         width: 100%;
-        background-color: rgb(240, 240, 240);
       }
 
       /* --- Main Product Container --- */
@@ -296,6 +295,69 @@
       .check,.cross{
         font-size: 24px;
       }
+      /* Styling for the new p title */
+      .faq-title {
+          text-align: center;
+          font-size: 26px;
+          font-weight: bold;
+          margin-bottom: 30px;
+          border-bottom: 1px solid gray;
+      }
+
+      .faq-container {
+          padding: 10px 10px;
+          width: 100%;
+          background-color: #fff;
+          max-width: 1000px;
+          margin: 10px auto;
+          border-radius: 10px;
+
+      }
+
+      .faq-item {
+          border-bottom: 1px solid #ddd;
+          margin-bottom: 10px;
+      }
+
+      .faq-question {
+          width: 100%;
+          padding: 15px;
+          background-color: black;
+          color: white;
+          border: none;
+          text-align: left;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-radius: 20px;
+      }
+
+      /* Smooth transition for the icon rotation */
+      .faq-question i {
+          transition: transform 0.5s ease-in-out;
+      }
+
+      .faq-answer {
+          padding: 0 15px;
+          max-height: 0;
+          overflow: hidden;
+          /* Added transition time for smooth dropdown */
+          transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+          color: #555;
+      }
+
+      /* State when active */
+      .faq-item.active .faq-answer {
+          max-height: 300px; /* High enough to fit content */
+          padding: 15px;
+      }
+
+      .faq-item.active .faq-question i {
+          transform: rotate(180deg);
+      }
       /* =========================================
         RESPONSIVE DESIGN (TABLET & MOBILE) 
         ========================================= */
@@ -537,6 +599,59 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </section>
+
+  <section class="faq-container">
+    <p class="faq-title">Frequently Asked Questions</p>
+    
+    <div class="faq-item">
+        <button class="faq-question">How do I place an order? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer">
+            <p>Browse our products, add them to cart, and proceed to checkout. Fill in your details, select a payment method, and confirm your order.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">Is Cash on Delivery (COD) available? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer">
+            <p>Yes, we offer Cash on Delivery as well as online payment options.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">How long does delivery take? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer">
+            <p>Orders are processed within 24 hours and delivered within 3–7 business days depending on your location.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">Can I return or exchange a product? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer">
+            <p>Yes, we have a 7-day return and exchange policy for unopened and unused products in original packaging.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">How will I know my order is confirmed? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer">
+            <p>You’ll receive an order confirmation email (and SMS if available) with your order number and delivery details.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">Is my information safe? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer">
+            <p>Yes, Your information all safe with us.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">What if my product is damaged? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-answer">
+            <p>If you find your product damaged you can return it on the spot.</p>
+        </div>
     </div>
   </section>
 
@@ -864,6 +979,30 @@
 
     // Mobile Side Panel Search Bar
     setupSearch('sideSearchInput', 'sideSearchBtn', 'sideSearchSuggestions');
+
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+          const faqItem = button.parentElement;
+          const icon = button.querySelector('i');
+          const isOpen = faqItem.classList.contains('active');
+
+          // 1. Close all other FAQ items first
+          document.querySelectorAll('.faq-item').forEach(item => {
+              item.classList.remove('active');
+              const otherIcon = item.querySelector('.faq-question i');
+              if (otherIcon) {
+                  otherIcon.classList.replace('fa-minus', 'fa-plus');
+              }
+          });
+
+          // 2. If the clicked item was NOT already open, open it
+          if (!isOpen) {
+              faqItem.classList.add('active');
+              icon.classList.replace('fa-plus', 'fa-minus');
+          }
+          // If it was already open, it remains closed (standard accordion behavior)
+      });
+    });
   </script>
 </body>
 </html>
