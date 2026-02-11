@@ -47,6 +47,7 @@
     }
 
     .form-group { margin-bottom: 15px; }
+    .form-group span{ color: red; font-size: 20px;}
     .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
     .form-group input, .form-group textarea {
       width: 100%;
@@ -157,26 +158,31 @@
       <form id="checkoutForm">
         <div class="two-col-input">
           <div class="form-group" style="flex:1;">
-            <label>First Name *</label>
+            <label>First Name <span>*</span></label>
             <input type="text" id="fName" required>
           </div>
           <div class="form-group" style="flex:1; margin-left: 10px;">
-            <label>Last Name *</label>
+            <label>Last Name <span>*</span></label>
             <input type="text" id="lName" required>
           </div>
         </div>
         <div class="form-group">
-          <label>Phone Number *</label>
+          <label>Email <span>*</span></label>
+          <input type="tel" id="phone" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number <span>*</span></label>
           <input type="tel" id="phone" placeholder="03xx xxxxxxx" required>
         </div>
         <div class="form-group">
-          <label>Street Address *</label>
-          <input type="text" id="address" required>
-        </div>
-        <div class="form-group">
-          <label>City *</label>
+          <label>City <span>*</span></label>
           <input type="text" id="city" required>
         </div>
+        <div class="form-group">
+          <label>Street Address <span>*</span></label>
+          <input type="text" id="address" required>
+        </div>
+        
         <div class="form-group">
           <label>Order Notes (Optional)</label>
           <textarea id="notes" rows="3"></textarea>
@@ -187,68 +193,58 @@
         <h3 class="section-title" style="border:none; font-size: 16px;">Payment Method</h3>
         
         <div class="payment-option-container">
-            <label class="radio-label">
-                <input type="radio" name="paymentMethod" value="Cash on Delivery" checked onchange="togglePaymentInfo()">
-                Cash on Delivery (COD)
-            </label>
-            <div id="codInfo" class="payment-info active">
-                <p><strong>Thank you for your order!</strong></p>
-                <p>Order confirm krny ky liye ap ko <strong>300 advance</strong> send krny hoo, jo kay Total payment main sy minus kr diay jay gy.</p>
-                <p>Payment send krny ky bad screenshot bhejna na bholiyay ga is WhatsApp number par: <strong>0343 7940506</strong> (WhatsApp only)</p>
-                
-                <h4>Payment Details for Advance:</h4>
-                <div class="bank-info">
-                    <strong>Easypaisa / Sadapay / Nayapay:</strong><br>
-                    Name: Muhammad Sheharyar<br>
-                    Number: 03194807902
-                </div>
-                <div class="bank-info">
-                    <strong>Jazzcash:</strong><br>
-                    Name: Muhammad Shakoor<br>
-                    Number: 03194807908
-                </div>
-                <div class="bank-info">
-                    <strong>Bank Transfer (Bank of Punjab):</strong><br>
-                    Account Title: Muhammad Sheharyar<br>
-                    Account Number: 6010261451100012<br>
-                    IBAN: PK13BPUN6010261451100012
-                </div>
-                <div class="note-box">
-                    Note: Payment k baad screenshot bhejna na bhoolna is WhatsApp number par: 0343 7940506 (WhatsApp only)
-                </div>
+          <label class="radio-label">
+              <input type="radio" name="paymentMethod" value="Cash on Delivery" checked onchange="togglePaymentInfo()">
+              Cash on Delivery (COD)
+          </label>
+          <div id="codInfo" class="payment-info active">
+            <p><strong>Thank you for your order!</strong></p>
+            <p>Order confirm krny ky liye ap ko <strong>300 advance</strong> send krny hoo, jo kay Total payment main sy minus kr diay jay gy.</p>
+            <p>Payment send krny ky bad screenshot bhejna na bholiyay ga is WhatsApp number par: <strong><p>0336 8150506</p></strong> (WhatsApp only)</p>
+            
+            <h4>Payment Details for Advance:</h4>
+            <div class="bank-info">
+                <strong>Easypaisa / Jazzcash / SadaPay / NayaPay:</strong><br>
+                Name: Muhammad Atif<br>
+                Number: 03368150506
             </div>
+            <div class="bank-info">
+                <strong>Bank Transfer (UNITED BANK LIMITED):</strong><br>
+                Account Title: Muhammad Atif<br>
+                Account Number: 0207317761362<br>
+                IBAN: PK69UNIL0109000317761362<br>
+            </div>
+            <div class="note-box">
+                Note: Payment k baad screenshot bhejna na bhoolna is WhatsApp number par: <p>0336 8150506</p> (WhatsApp only)
+            </div>
+          </div>
         </div>
 
         <div class="payment-option-container">
-            <label class="radio-label">
-                <input type="radio" name="paymentMethod" value="Advance Payment" onchange="togglePaymentInfo()">
-                Full Advance Payment
-            </label>
-            <div id="advanceInfo" class="payment-info">
-                <p><strong>Thank you for your order!</strong></p>
-                <p>Payment send krny ky bad screenshot bhejna na bholiyay ga is WhatsApp number par: <strong>0343 7940506</strong> (WhatsApp only)</p>
-                
-                <h4>Payment Details:</h4>
-                <div class="bank-info">
-                    <strong>Easypaisa / Sadapay / Nayapay:</strong><br>
-                    Name: Muhammad Sheharyar<br>
-                    Number: 03194807902
-                </div>
-                <div class="bank-info">
-                    <strong>Jazzcash:</strong><br>
-                    Name: Muhammad Shakoor<br>
-                    Number: 03194807908
-                </div>
-                <div class="bank-info">
-                    <strong>Bank Transfer (Bank of Punjab):</strong><br>
-                    Account Title: Muhammad Sheharyar<br>
-                    Account Number: 6010261451100012<br>
-                    IBAN: PK13BPUN6010261451100012
-                </div>
-                <div class="note-box">
-                    Note: Payment k baad screenshot bhejna na bhoolna is WhatsApp number par: 0343 7940506 (WhatsApp only)
-                </div>
+          <label class="radio-label">
+              <input type="radio" name="paymentMethod" value="Advance Payment" onchange="togglePaymentInfo()">
+              Full Advance Payment
+          </label>
+          <div id="advanceInfo" class="payment-info">
+            <p><strong>Thank you for your order!</strong></p>
+            <p>Payment send krny ky bad screenshot bhejna na bholiyay ga is WhatsApp number par: <strong><p>0336 8150506</p></strong> (WhatsApp only)</p>
+            
+            <h4>Payment Details:</h4>
+            <div class="bank-info">
+                <strong>Easypaisa / Jazzcash SadaPay / NayaPay:</strong><br>
+                Name: Muhammad Atif<br>
+                Number: 03368150506
             </div>
+            <div class="bank-info">
+                <strong>Bank Transfer (UNITED BANK LIMITED):</strong><br>
+                Account Title: Muhammad Atif<br>
+                Account Number: 0207317761362<br>
+                IBAN: PK69UNIL0109000317761362
+            </div>
+            <div class="note-box">
+                Note: Payment k baad screenshot bhejna na bhoolna is WhatsApp number par: <p>0336 8150506</p> (WhatsApp only)
+            </div>
+          </div>
         </div>
       </div>
     </div>

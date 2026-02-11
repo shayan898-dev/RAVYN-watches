@@ -41,12 +41,12 @@ i{
   color: gray;
 }
 .hero-left button{
-  padding: 10px 20px;
+  padding: 15px 30px;
   background-color: black;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   border: none;
-  border-radius: 20px;
+  border-radius: 30px;
   margin:50px 10px;
   cursor: pointer;
   transition: all .2s linear;
@@ -134,13 +134,14 @@ i{
   align-items: center;
   justify-content: center;
   color: white;
-  background-color: rgb(0, 0, 0);
+  background-color: red;
   width: 80px;
   height: 40px;
   position: absolute;
   top: 0;
   left: 0;
   border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .product-bottom{

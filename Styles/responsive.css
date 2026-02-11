@@ -55,6 +55,14 @@
     color: black;
     font-size: 25px;
   }
+  
+  .cart-button{
+    margin-top: 10px;
+  }
+  .header-right-section a{
+    width: 100%;
+    border-bottom: 2px solid;
+  }
   .menu,
   .cart-button{
     color: black;
@@ -166,7 +174,7 @@
   }
   .header{
     left: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
   }
   .hero-left h4,
   .hero-left{
@@ -291,7 +299,7 @@
   .header{
     height: 50px;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
   }
   .header h1{
     font-size: 24px;
