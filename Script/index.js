@@ -112,7 +112,7 @@ const sectionMapping = {
     'Women Bracelet': '.fe-products',
     'Rolex Watches': '.js-product-grid-rolex',
     'Patek Philippe': '.js-product-grid-patek',
-    'Automatic Watches': '.js-product-grid-automatic'
+    'Automatic': '.js-product-grid-automatic'
 };
 
 function moveCarousel() {
