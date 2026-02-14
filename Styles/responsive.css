@@ -101,7 +101,6 @@
     color: black;
     font-size: 25px;
   }
-  
   .cart-button{
     margin-top: 10px;
   }
@@ -117,24 +116,13 @@
     color: white;
   }
   .hero-section {
-    margin: 10px 0;
-    height: 70vh;
-    margin: 10px 30px;
-    border-radius: 15px;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-    background-position: top 40% right 30%;
+    height: 85vh;
+    width: 100%;
+    border-radius: 0px;
+    background-size: contain;
   }
   .hero-left{
-    margin-left: 20px;
-  }
-  .hero-left h2 {
-
-    width: 500px;
-    font-size: 40px;
-  }
-  .hero-left button{
-    margin: 30px 10px;
-    box-shadow: 3px 3px 7px gray;
+    width: 100%;
   }
   .products-grid{
     display: grid;
@@ -183,7 +171,7 @@
     background-size: cover;
   }
   .hero-left{
-    width: 480px;
+   width:100%;
   }
   .social-icon i{
     font-size: 30px;
@@ -226,7 +214,6 @@
     margin-right: 0px;
     margin-top: 10px;
     background-size: cover;
-    background-position: top 30% right 35%;
     background-repeat: no-repeat;
   }
   .header{
@@ -235,7 +222,7 @@
   }
   .hero-left h4,
   .hero-left{
-    width: 70%;
+    width: 100%;
   }
   .products{
     display: flex;
@@ -270,7 +257,6 @@
     margin-top: 10px;
     width: 100%;
     background-size: cover;
-    background-position-x: 76%;
     background-repeat: no-repeat;
   }
   .header{
@@ -307,7 +293,7 @@
     padding: 30px 10px;
   }
   .hero-left{
-    width: 68%;
+    width: 100%;
   }
   .hero-section h2{
     font-size: 30px;
@@ -360,7 +346,7 @@
 
 @media (max-width: 430px) {
   .header{
-    height: 50px;
+    height: 15vh;
     width: 100%;
     margin-bottom: 0px;
   }
@@ -369,13 +355,12 @@
   }
   .hero-section{
     width: 100%;
-    height: 400px;
+    height: 85vh;
     margin: 0px 0px;
-    background-position-x: 78%;
     background-size: cover;
   }
   .hero-left{
-    width: 65%;
+    width: 100%;
     line-height: 30px;
   }
   .hero-section h2{
@@ -581,8 +566,6 @@
     border: none;
     font-size: 20px;
   }
-
-  /* Make suggestions stack inside the panel */
   #sideSearchSuggestions {
     position: static;
     box-shadow: none;
@@ -590,7 +573,7 @@
     display: block;
   }
   .header{
-    height: 50px;
+    height: 10vh;
     width: 100%;
   }
   .header h1{
@@ -598,13 +581,12 @@
   }
   .hero-section{
     width: 100%;
-    height: 300px;
-    margin: 00px 0px;
-    background-position-x: 80%;
+    height: 90vh;
+    margin:   0px 0px;
     background-size: cover;
   }
   .hero-left{
-    width: 60%;
+    width: 100%;
   }
   .hero-section h2{
     font-size: 14px;
@@ -749,7 +731,7 @@
     padding-bottom: 70px;
   }
   .hero-left{
-    width: 260px;
+    width: 100%;
     line-height: 20px;
   }
   .products-grid{

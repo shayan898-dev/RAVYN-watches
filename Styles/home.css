@@ -6,7 +6,7 @@ body{
   padding: 0px;
   height: 100vh;
   width: 100%;
-  background-color: rgb(240, 240, 240);
+  background-color: gray;
 }
 a{
   color: black;
@@ -15,42 +15,53 @@ a{
 i{
   border: none;
 }
-.hero-section{
+.hero-section {
+    display: flex;
+    justify-content: center; /* Aligns the text container to the left */
+    align-items: center;        /* Centers text vertically */
+    height: 100vh;
+    color: white;
+    background-color: #000000;
+    background-image: url('../Images/hero-section.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat; 
+}
+
+.hero-left {
+  width: 100%;
+  font-family: 'Fashion', sans-serif;
+  letter-spacing: 2px;/* Reduced slightly for better readability */
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80vh;
-  margin: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 20px 20px 60px black;
-  /*box-shadow: 5px 5px 15px rgba(0,0,0,0.3);*/
-  background-image: url(../Images/hero-section.png);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;/* Align text to the left for a cleaner look */
+  text-align: left;
 }
-.hero-left{
-  width: 600px;
-  margin-left: 70px;
-  font-style: italic;
+
+.hero-left h2 {
+    font-size: 3rem;/* Using rem for better scaling */
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: 5px;
 }
-.hero-left h2{
-  font-size: 40px;
-}
-.hero-left h4{
-  color: gray;
+
+.hero-left h4 {
+    color: #cccccc;
+    font-family: 'Times New Roman', Times, serif;
+    letter-spacing: 1px;
+    font-weight: 300;
 }
 .hero-left button{
   padding: 15px 30px;
+  border: 2px solid white;
   background-color: black;
   color: white;
   font-size: 18px;
-  border: none;
   border-radius: 30px;
   margin:50px 10px;
   cursor: pointer;
   transition: all .2s linear;
-  box-shadow: 5px 5px 15px gray;
 }
 .hero-left button:active{
   background-color: rgb(240, 240, 240);
@@ -274,7 +285,7 @@ i{
     
     /* Luxury Scrollbar Styling */
     scrollbar-width: thin;
-    scrollbar-color: #000000 #e0e0e0;
+    scrollbar-color: #000000 lightgray;
 }
 
 /* Chrome/Safari/Edge Scrollbar Design */
