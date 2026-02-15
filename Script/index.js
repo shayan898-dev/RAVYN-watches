@@ -1,6 +1,7 @@
 // --- 1. Mobile Menu Logic ---
 const bar = document.getElementById('bar');
-const nav = document.querySelector('.header-right-section');
+// UPDATED: Target .center-nav instead of .header-right-section
+const nav = document.querySelector('.center-nav'); 
 const close = document.getElementById('close');
 
 if (bar) bar.addEventListener('click', () => nav.classList.add('active'));
@@ -87,7 +88,6 @@ function renderProducts(category, limit, containerSelector, customList = null) {
     container.innerHTML = html;
 }
 
-// --- 5. Initial Product Load ---
 // --- 5. EXECUTION LOGIC (Decides what to render on which page) ---
 const collectionContainer = document.querySelector('.js-collection-grid'); // Shop page grid
 const homeContainer = document.querySelector('.js-product-grid'); // Home page grid

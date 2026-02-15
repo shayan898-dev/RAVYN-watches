@@ -18,6 +18,15 @@
       <a href="index.html"><h1>RAVYN</h1></a>
     </div>
     
+    <div class="center-nav">
+        <a href="index.html"><p class="menu">Home</p></a>
+        <a href="collection.html"><p class="menu">Collection</p></a>
+        <a href="collection.html?category=men-watch"><p class="menu">Men Watches</p></a>
+        <a href="collection.html?category=women-watch"><p class="menu">Women Watches</p></a>
+        <a href="collection.html?category=rolex-watch"><p class="menu">Rolex</p></a>
+        <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
+    </div>
+
     <div class="header-right-section">
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search watches..." autocomplete="off">
@@ -25,16 +34,15 @@
             <div class="search-suggestions" id="searchSuggestions"></div>
         </div>
 
-        <a href="index.html"><p class="menu">Home</p></a>
-        <a href="collection.html"><p class="menu">Collection</p></a>
-        <a href="cart.html"><i class="fa-solid fa-cart-shopping header-cart"></i></a>
+        <a href="cart.html" class="cart-button">
+            <i class="fa-solid fa-cart-shopping header-cart"></i>
+            <span>0</span>
+        </a>
         
-        <i class="fa fa-window-close" id="close" aria-hidden="true"></i>
+        <div class="mobile">
+          <i id="bar" class="fas fa-outdent"></i>
+        </div>    
     </div>
-
-    <div class="mobile">
-      <i id="bar" class="fas fa-outdent"></i>
-    </div>    
   </header>
 
   <section class="hero-section">

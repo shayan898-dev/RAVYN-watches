@@ -1,4 +1,4 @@
-.header{
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,28 +10,80 @@
   padding: 0 50px;
   z-index: 999;
 }
-.logo-container{
-  margin-left: 10px;
+
+.logo-container {
+  /* No special margin needed */
 }
-.logo-container h1{
+
+.logo-container h1 {
   color: white;
   font-family: 'Times New Roman', Times, serif;
 }
+
+/* =========================================
+   MIDDLE NAVIGATION
+   ========================================= */
+.center-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Space between links */
+}
+
+.menu {
+  margin: 0;
+  font-family: arial;
+  font-weight: 500;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s linear;
+  color: white;
+  text-decoration: none;
+}
+
+.menu::after {
+  content: '';
+  background-color: gray;
+  margin-top: 2px;
+  height: 3px;
+  width: 0px;
+  display: block;
+  border-radius: 10px;
+  transition: width .2s linear;
+}
+
+.menu:hover::after {
+  width: 100%; 
+}
+
+.menu:hover {
+  color: gray;
+}
+
+/* =========================================
+   RIGHT SECTION
+   ========================================= */
+.header-right-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Search Bar Styles */
 .search-container {
   display: flex;
   align-items: center;
   background: white;
   border-radius: 20px;
   padding: 5px 15px;
-  margin-right: 20px; /* Spacing from menu items */
   border: 1px solid #ccc;
+  position: relative;
 }
 
 .search-container input {
   border: none;
   outline: none;
   padding: 5px;
-  width: 150px; /* Adjust width as needed */
+  width: 150px;
   font-family: inherit;
 }
 
@@ -41,37 +93,24 @@
   cursor: pointer;
   color: gray;
 }
-/* Ensure the search container is relative so suggestions position correctly */
-.search-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  border-radius: 20px;
-  padding: 5px 15px;
-  margin-right: 20px;
-  border: 1px solid #ccc;
-  position: relative; /* CRITICAL for positioning the dropdown */
-}
 
-/* The Dropdown Box */
+/* Search Dropdown Styles */
 .search-suggestions {
   position: absolute;
-  top: 100%; /* Push it right below the input */
+  top: 100%;
   left: 0;
-  width: 100%; /* Match width of search bar */
+  width: 100%;
   background: white;
   border: 1px solid #ddd;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  max-height: 300px; /* Scroll if too many results */
+  max-height: 300px;
   overflow-y: auto;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  display: none; /* Hidden by default */
+  display: none;
   z-index: 1001;
 }
 
-/* Individual Suggestion Item */
 .suggestion-item {
   display: flex;
   align-items: center;
@@ -85,11 +124,6 @@
   background-color: #f9f9f9;
 }
 
-.suggestion-item:last-child {
-  border-bottom: none;
-}
-
-/* Product Image in Suggestion */
 .suggestion-img {
   width: 40px;
   height: 40px;
@@ -98,7 +132,6 @@
   margin-right: 10px;
 }
 
-/* Product Name in Suggestion */
 .suggestion-info h4 {
   font-size: 13px;
   margin: 0;
@@ -111,61 +144,60 @@
   margin: 2px 0 0 0;
   color: #777;
 }
-.header-right-section{
-  display: flex;
-  justify-content: space-between;
-  place-items: center;
-}
-.cart-button{
-  font-size: 35px;
-  margin-left:10px;
+
+/* --- CART BUTTON STYLES --- */
+.cart-button {
+  font-size: 30px;
+  color: white !important; /* Force white color */
   position: relative;
-  bottom: 0;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header-cart {
   color: white;
+  font-size: 25px;
+  transition: color 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.cart-button span{
-  font-size: 7px;
-  font-family: Arial, Helvetica, sans-serif;
-  border-radius: 50%;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50% , -50%);
-  color: black;
-}
-#close{
-  display: none;
-}
-.mobile{
-  display: none;
-}
-.menu{
-  margin: 0 10px;
-  font-family: arial;
-  font-weight: 500;
-  font-size: 18px;
-  cursor: pointer;
-  transition: color 0.2s linear;
-  color: white;
-}
-.menu::after{
-  content: '';
-  background-color: gray;
-  margin-top: 2px;
-  height: 3px;
-  width: 0px;
-  display: block;
-  border-radius: 10px;
-  transition: width .2s linear;
-}
-.menu:hover::after{
-  width: 40px;
-}
-.menu:hover{
+
+.header-cart:hover {
   color: gray;
 }
 
-.footer{
+/* Cart Badge (Counter) */
+.cart-button span {
+  font-size: 12px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 13px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+/* Mobile & Close Triggers (Hidden on Desktop) */
+#close {
+  display: none; 
+}
+
+.mobile {
+  display: none; 
+}
+
+/* =========================================
+   FOOTER STYLES
+   ========================================= */
+.footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -176,51 +208,61 @@
   color: white;
   bottom: 0;
 }
-.footer-left-section{
+
+.footer-left-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 300px;
   margin-left: 20px;
 }
-.footer-left-section h1{
+
+.footer-left-section h1 {
   font-size: 75px;
   margin-top: 90px;
   font-family: 'Times New Roman', Times, serif;
 }
-.footer-left-section p{
+
+.footer-left-section p {
   width: 250px;
   color: gray;
 }
 
-.footer-right-section h2{
+.footer-right-section h2 {
   font-size: 42px;
   letter-spacing: 2px;
 }
-.footer-right-section{
+
+.footer-right-section {
   margin-left: 60px;
 }
-.footer-right-section p{
+
+.footer-right-section p {
   font-size: 20px;
   margin-left: 25px;
-  cursor:pointer;
+  cursor: pointer;
 }
-.footer-right-section i{
+
+.footer-right-section i {
   margin-left: 10px;
   font-size: 35px;
   cursor: pointer;
   transition: color .15s linear;
 }
-.footer-right-section i:hover{
+
+.footer-right-section i:hover {
   color: gray;
 }
-.footer-right-section .social-icon{
+
+.footer-right-section .social-icon {
   margin: 40px 30px;
 }
-a{
+
+a {
   color: black;
   text-decoration: none;
 }
-i{
+
+i {
   border: none;
 }
