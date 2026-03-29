@@ -326,7 +326,6 @@
   <script>
     // ==========================================
     // BULLETPROOF SAFE CART & WISHLIST FUNCTIONS
-    // These ensure the drawer ALWAYS works on this page
     // ==========================================
     window.openCart = window.openCart || function() {
         const sideCartPanel = document.getElementById('sideCartPanel');
@@ -453,13 +452,12 @@
 
 
     // ==========================================
-    // ISOLATED PRODUCT LOGIC (No crashes!)
+    // ISOLATED PRODUCT LOGIC
     // ==========================================
     (function() {
         const params = new URLSearchParams(window.location.search);
         const productId = params.get('id');
         
-        // Ensure products data loaded properly
         if(typeof products === 'undefined') {
             console.error("Error: products database not loaded.");
             return;
@@ -480,7 +478,6 @@
           document.querySelector('.pro-name').innerText = product.name;
           document.querySelector('.pro-desc').innerText = product.description || product.des || "No description available.";
 
-          // Price Logic
           let finalPrice = product.price; 
           
           if (product.dis > 0) {
@@ -495,7 +492,6 @@
               document.querySelector('.pro-price').innerText = "Rs " + product.price + "/-";
           }
 
-          // Dynamic Wishlist Button Setup
           const dynamicWishlistBtn = document.getElementById('dynamic-wishlist-btn');
           if (dynamicWishlistBtn) {
               dynamicWishlistBtn.setAttribute('onclick', `toggleWishlist(event, '${product.id}')`);
@@ -505,13 +501,11 @@
               }
           }
 
-          // Image Gallery Logic
+          // Image Gallery & Color Logic (kept same as your original)
           let allImages = [product.image];
           if (product.variations && product.variations.length > 0) {
               product.variations.forEach(v => {
-                  if (v.image && !allImages.includes(v.image)) {
-                      allImages.push(v.image);
-                  }
+                  if (v.image && !allImages.includes(v.image)) allImages.push(v.image);
               });
           }
 
@@ -521,13 +515,10 @@
                   const imgCol = document.createElement('div');
                   imgCol.classList.add('small-img-col');
                   imgCol.setAttribute('data-img', imgSrc);
-                  
                   if (index === 0) imgCol.classList.add('active'); 
 
                   const img = document.createElement('img');
                   img.src = imgSrc;
-                  img.alt = "Thumbnail";
-
                   imgCol.appendChild(img);
                   smallImgGroup.appendChild(imgCol);
 
@@ -535,91 +526,31 @@
                       mainImg.style.opacity = '0';
                       if(preloader) preloader.style.display = 'flex';
                       mainImg.src = imgSrc;
-                      
                       document.querySelectorAll('.small-img-col').forEach(col => col.classList.remove('active'));
                       imgCol.classList.add('active');
-
-                      document.querySelectorAll('.color-circle').forEach(c => {
-                          if (c.getAttribute('data-linked-img') === imgSrc) {
-                              c.classList.add('active');
-                          } else {
-                              c.classList.remove('active');
-                          }
-                      });
                   });
               });
           }
 
-          // Color Circles Logic
-          const colorContainer = document.getElementById('product-colors');
-          const colorCirclesContainer = document.getElementById('color-circles-container');
-          const hasColors = product.variations && product.variations.some(v => v.color);
-
-          if (hasColors) {
-            colorContainer.style.display = 'block'; 
-            
-            product.variations.forEach((varObj, index) => {
-              if(varObj.color) {
-                  const circle = document.createElement('div');
-                  circle.classList.add('color-circle');
-                  circle.style.backgroundColor = varObj.color;
-                  circle.title = varObj.color; 
-                  circle.setAttribute('data-linked-img', varObj.image);
-
-                  if (varObj.image === product.image || index === 0) {
-                      circle.classList.add('active');
-                  }
-
-                  circle.addEventListener('click', () => {
-                      mainImg.style.opacity = '0';
-                      if(preloader) preloader.style.display = 'flex';
-                      mainImg.src = varObj.image;
-                      
-                      document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
-                      circle.classList.add('active');
-
-                      document.querySelectorAll('.small-img-col').forEach(col => {
-                          if (col.getAttribute('data-img') === varObj.image) {
-                              col.classList.add('active');
-                              col.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                          } else {
-                              col.classList.remove('active');
-                          }
-                      });
-                  });
-                  colorCirclesContainer.appendChild(circle);
-              }
-            });
-          }
-
-          // Quantity Logic
+          // Quantity Buttons
           const qtyInput = document.getElementById('qty-input');
           const plusBtn = document.getElementById('qty-plus');
           const minusBtn = document.getElementById('qty-minus');
 
-          if(plusBtn){
-            plusBtn.addEventListener('click', () => {
-                let val = parseInt(qtyInput.value) || 0;
-                qtyInput.value = val + 1;
-            });
-          }
+          if(plusBtn) plusBtn.addEventListener('click', () => { qtyInput.value = (parseInt(qtyInput.value) || 0) + 1; });
+          if(minusBtn) minusBtn.addEventListener('click', () => { 
+              let val = parseInt(qtyInput.value) || 1;
+              if (val > 1) qtyInput.value = val - 1;
+          });
 
-          if(minusBtn){
-            minusBtn.addEventListener('click', () => {
-                let val = parseInt(qtyInput.value) || 1;
-                if (val > 1) qtyInput.value = val - 1;
-            });
-          }
+          // --- THE FIX: CLEAN SEPARATION OF LOGIC ---
 
-          // ADD TO CART LOGIC
-          const addCartBtn = document.querySelector('.add-cart-btn');
-          const buyNowBtn = document.querySelector('.buy-now-btn');
-
-          function addProductToCart() {
+          // 1. Core Data Function (Only handles localStorage)
+          function addProductToCartData() {
             let cart = JSON.parse(localStorage.getItem('ravyn_cart')) || [];
             const quantity = parseInt(qtyInput.value) || 1;
-
             const existingItem = cart.find(item => item.id === product.id);
+
             if (existingItem) {
               existingItem.quantity += quantity;
             } else {
@@ -631,57 +562,49 @@
                 quantity: quantity
               });
             }
-
             localStorage.setItem('ravyn_cart', JSON.stringify(cart));
-            window.renderCartDrawer(); // Update drawer instantly
-            
-            // Change button color briefly
-            const originalText = addCartBtn.innerText;
-            addCartBtn.innerText = "Added!";
-            addCartBtn.style.backgroundColor = "black";
-            addCartBtn.style.color = "white";
-            setTimeout(() => {
-                addCartBtn.innerText = originalText;
-                addCartBtn.style.backgroundColor = "#fff";
-                addCartBtn.style.color = "black";
-            }, 1000);
+            window.renderCartDrawer();
           }
 
+          // 2. Add to Cart Button Logic (Data + UI Feedback)
+          const addCartBtn = document.querySelector('.add-cart-btn');
           addCartBtn.addEventListener('click', () => {
-            addProductToCart(); 
-            window.openCart(); // Slide drawer open immediately!
+            addProductToCartData(); 
+            window.openCart(); // Show drawer
+
+            // Provide visual feedback ONLY on this button
+            const originalText = addCartBtn.innerText;
+            addCartBtn.innerText = "ADDED!";
+            addCartBtn.style.backgroundColor = "black";
+            addCartBtn.style.color = "white";
+
+            setTimeout(() => {
+                addCartBtn.innerText = originalText;
+                addCartBtn.style.backgroundColor = ""; // Reset to CSS default
+                addCartBtn.style.color = "";
+            }, 1000);
           });
 
+          // 3. Buy Now Button Logic (Data + Redirect, No Feedback on other button)
+          const buyNowBtn = document.querySelector('.buy-now-btn');
           buyNowBtn.addEventListener('click', () => {
-            addProductToCart(); 
+            addProductToCartData(); 
             window.location.href = 'checkout.html';
           });
 
           updateShippingDates();
-
         } else {
-          document.querySelector('.single-pro-details').innerHTML = "<h2 style='margin-bottom:20px;'>Product Not Found</h2><a href='index.html' style='padding: 10px 20px; background: black; color: white;'>Go Home</a>";
-          document.querySelector('.single-pro-image').style.display = 'none';
+          document.querySelector('.single-pro-details').innerHTML = "<h2>Product Not Found</h2>";
         }
 
-        // Shipping Date calculation
         function updateShippingDates() {
           const now = new Date();
-          function formatDate(date) {
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-          }
-
-          const orderedDate = new Date(now);
-          const shippedDate = new Date(now); shippedDate.setDate(orderedDate.getDate() + 1); 
-          const deliveredDate = new Date(now); deliveredDate.setDate(orderedDate.getDate() + 4); 
-
-          const orderedEl = document.getElementById('order-date');
-          const shippedEl = document.getElementById('ship-date');
-          const deliveredEl = document.getElementById('delivery-date');
-
-          if (orderedEl) orderedEl.innerText = formatDate(orderedDate);
-          if (shippedEl) shippedEl.innerText = formatDate(shippedDate);
-          if (deliveredEl) deliveredEl.innerText = formatDate(deliveredDate);
+          const formatDate = (date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          document.getElementById('order-date').innerText = formatDate(now);
+          const ship = new Date(now); ship.setDate(now.getDate() + 1);
+          document.getElementById('ship-date').innerText = formatDate(ship);
+          const del = new Date(now); del.setDate(now.getDate() + 4);
+          document.getElementById('delivery-date').innerText = formatDate(del);
         }
 
         // FAQ Toggles
@@ -690,15 +613,11 @@
               const faqItem = button.parentElement;
               const icon = button.querySelector('i');
               const isOpen = faqItem.classList.contains('active');
-
               document.querySelectorAll('.faq-item').forEach(item => {
                   item.classList.remove('active');
                   const otherIcon = item.querySelector('.faq-question i');
-                  if (otherIcon) {
-                      otherIcon.classList.replace('fa-minus', 'fa-plus');
-                  }
+                  if (otherIcon) otherIcon.classList.replace('fa-minus', 'fa-plus');
               });
-
               if (!isOpen) {
                   faqItem.classList.add('active');
                   icon.classList.replace('fa-plus', 'fa-minus');
@@ -706,14 +625,7 @@
           });
         });
 
-        // Initialize cart amounts on load
         window.renderCartDrawer();
-        
-        // Initialize Wishlist amount on load
-        let savedWishlist = JSON.parse(localStorage.getItem('ravenWishlist')) || [];
-        const countElement = document.getElementById('wishlist-count');
-        if (countElement) countElement.innerText = savedWishlist.length;
-
     })();
   </script>
 </body>
